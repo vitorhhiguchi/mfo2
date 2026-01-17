@@ -1,9 +1,12 @@
 import { prisma } from '../lib/prisma.js';
+import type { Prisma } from '@prisma/client';
 import type {
     CreateSimulationInput,
     UpdateSimulationInput,
     DuplicateSimulationInput
 } from '../schemas/simulation.schema.js';
+
+type TransactionClient = Prisma.TransactionClient;
 
 export class SimulationService {
     async create(data: CreateSimulationInput) {
@@ -140,7 +143,7 @@ export class SimulationService {
         const newVersion = (maxVersion._max.version ?? 0) + 1;
 
         // Create new simulation with incremented version
-        return prisma.$transaction(async (tx) => {
+        return prisma.$transaction(async (tx: TransactionClient) => {
             const newSimulation = await tx.simulation.create({
                 data: {
                     name: source.name,
@@ -241,7 +244,7 @@ export class SimulationService {
         }
 
         // Create duplicate with new name
-        return prisma.$transaction(async (tx) => {
+        return prisma.$transaction(async (tx: TransactionClient) => {
             const newSimulation = await tx.simulation.create({
                 data: {
                     name: data.name,
@@ -334,7 +337,7 @@ export class SimulationService {
         });
 
         // Create new current situation with today's date
-        return prisma.$transaction(async (tx) => {
+        return prisma.$transaction(async (tx: TransactionClient) => {
             const newSimulation = await tx.simulation.create({
                 data: {
                     name: 'Situação Atual',

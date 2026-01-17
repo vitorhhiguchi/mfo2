@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma.js';
+import type { Prisma } from '@prisma/client';
 import type {
     CreateAssetInput,
     UpdateAssetInput,
@@ -6,9 +7,11 @@ import type {
     UpdateAssetRecordInput
 } from '../schemas/asset.schema.js';
 
+type TransactionClient = Prisma.TransactionClient;
+
 export class AssetService {
     async create(data: CreateAssetInput) {
-        return prisma.$transaction(async (tx) => {
+        return prisma.$transaction(async (tx: TransactionClient) => {
             const asset = await tx.asset.create({
                 data: {
                     name: data.name,

@@ -1,0 +1,55 @@
+FAIL tests/unit/engine/projection.engine.test.ts
+  ProjectionEngine
+    Basic projection calculation
+      × should calculate compound growth correctly (5 ms)
+      √ should handle DEAD status - divide expenses by 2 (1 ms)
+      √ should handle DEAD status - no income (1 ms)
+      √ should handle INVALID status - only WORK income stops
+    Asset record selection
+      √ should use most recent record before simulation date (1 ms)
+    Movement frequency
+      √ should calculate ONCE frequency correctly
+      √ should calculate YEARLY frequency correctly (1 ms)
+    Insurance calculations
+      × should include insurance value in total patrimony (1 ms)
+
+  ● ProjectionEngine › Basic projection calculation › should calculate compound growth correctly
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 2
+    Received length: 3
+    Received array:  [{"financialAssets": 104000, "insuranceValue": 0, "netResult": 0, "realEstateAssets": 0, "totalExpenses": 0, "totalIncome": 0, "totalPatrimony": 104000, "totalPatrimonyWithoutInsurance": 104000, "year": 2023}, {"financialAssets": 108160, "insuranceValue": 0, "netResult": 0, "realEstateAssets": 0, "totalExpenses": 0, "totalIncome": 0, "totalPatrimony": 108160, "totalPatrimonyWithoutInsurance": 108160, "year": 2024}, {"financialAssets": 112486.4, "insuranceValue": 0, "netResult": 0, "realEstateAssets": 0, "totalExpenses": 0, "totalIncome": 0, "totalPatrimony": 112486.4, "totalPatrimonyWithoutInsurance": 112486.4, "year": 2025}]
+
+      37 |             const result = engine.run();
+      38 |
+    > 39 |             expect(result.projections).toHaveLength(2);
+         |                                        ^
+      40 |             expect(result.projections[0].year).toBe(2024);
+      41 |             // After first year: 100000 * 1.04 = 104000
+      42 |             expect(result.projections[0].financialAssets).toBeCloseTo(104000, 0);
+
+      at Object.<anonymous> (tests/unit/engine/projection.engine.test.ts:39:40)
+
+  ● ProjectionEngine › Insurance calculations › should include insurance value in total patrimony
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1000000
+    Received: 0
+
+      370 |             const result = engine.run();
+      371 |
+    > 372 |             expect(result.projections[0].insuranceValue).toBe(1000000);
+          |                                                          ^
+      373 |             expect(result.projections[0].totalPatrimony).toBeGreaterThan(
+      374 |                 result.projections[0].totalPatrimonyWithoutInsurance
+      375 |             );
+
+      at Object.<anonymous> (tests/unit/engine/projection.engine.test.ts:372:58)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 6 passed, 8 total
+Snapshots:   0 total
+Time:        1.661 s, estimated 2 s
+Ran all test suites matching /tests\\unit/i.
