@@ -1,7 +1,7 @@
 import { prisma } from '../src/lib/prisma';
-import type { Client, Simulation, Asset, Movement, Insurance } from '@prisma/client';
+import type { Client, Simulation, Asset, Movement, Insurance, AssetType, MovementType, IncomeCategory, Frequency, InsuranceType } from '@prisma/client';
 
-export async function createTestClient(data?: Partial<Client>): Promise<Client> {
+export async function createTestClient(data?: Partial<{ name: string; birthDate: Date }>): Promise<Client> {
     return prisma.client.create({
         data: {
             name: data?.name ?? 'Test Client',
@@ -12,7 +12,7 @@ export async function createTestClient(data?: Partial<Client>): Promise<Client> 
 
 export async function createTestSimulation(
     clientId: number,
-    data?: Partial<Simulation>
+    data?: Partial<{ name: string; startDate: Date; realRate: number; version: number }>
 ): Promise<Simulation> {
     return prisma.simulation.create({
         data: {
@@ -27,7 +27,7 @@ export async function createTestSimulation(
 
 export async function createTestAsset(
     simulationId: number,
-    data?: Partial<Asset> & { initialValue?: number; initialDate?: Date }
+    data?: Partial<{ name: string; type: AssetType; initialValue: number; initialDate: Date }>
 ) {
     const asset = await prisma.asset.create({
         data: {
@@ -53,7 +53,7 @@ export async function createTestAsset(
 
 export async function createTestMovement(
     simulationId: number,
-    data?: Partial<Movement>
+    data?: Partial<{ name: string; type: MovementType; category: IncomeCategory; value: number; frequency: Frequency; startDate: Date; endDate: Date | null }>
 ): Promise<Movement> {
     return prisma.movement.create({
         data: {
@@ -71,7 +71,7 @@ export async function createTestMovement(
 
 export async function createTestInsurance(
     simulationId: number,
-    data?: Partial<Insurance>
+    data?: Partial<{ name: string; type: InsuranceType; startDate: Date; durationMonths: number; premium: number; insuredValue: number }>
 ): Promise<Insurance> {
     return prisma.insurance.create({
         data: {
@@ -87,11 +87,11 @@ export async function createTestInsurance(
 }
 
 export async function cleanDatabase() {
-    await prisma.$executeRaw`TRUNCATE TABLE "Insurance" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Movement" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "AssetRecord" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Financing" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Asset" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Simulation" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Client" CASCADE`;
+    await prisma.insurance.deleteMany();
+    await prisma.movement.deleteMany();
+    await prisma.financing.deleteMany();
+    await prisma.assetRecord.deleteMany();
+    await prisma.asset.deleteMany();
+    await prisma.simulation.deleteMany();
+    await prisma.client.deleteMany();
 }

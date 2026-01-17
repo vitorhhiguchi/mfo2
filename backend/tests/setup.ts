@@ -1,14 +1,19 @@
 import { prisma } from '../src/lib/prisma';
 
 beforeAll(async () => {
-    // Clean database before tests
-    await prisma.$executeRaw`TRUNCATE TABLE "Insurance" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Movement" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "AssetRecord" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Financing" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Asset" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Simulation" CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Client" CASCADE`;
+    // Ensure database connection
+    await prisma.$connect();
+});
+
+beforeEach(async () => {
+    // Clean database before each test in order of dependencies
+    await prisma.insurance.deleteMany();
+    await prisma.movement.deleteMany();
+    await prisma.financing.deleteMany();
+    await prisma.assetRecord.deleteMany();
+    await prisma.asset.deleteMany();
+    await prisma.simulation.deleteMany();
+    await prisma.client.deleteMany();
 });
 
 afterAll(async () => {

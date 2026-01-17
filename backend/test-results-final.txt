@@ -1,0 +1,219 @@
+ts-jest[config] (WARN) 
+    The "ts-jest" config option "isolatedModules" is deprecated and will be removed in v30.0.0. Please use "isolatedModules: true" in C:/Users/Vitor/Documents/mfo-v4/backend/tsconfig.json instead, see https://www.typescriptlang.org/tsconfig/#isolatedModules
+  
+{"level":30,"time":1768680044722,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","req":{"method":"POST","url":"/simulations","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044737,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","res":{"statusCode":201},"responseTime":15.095099985599518,"msg":"request completed"}
+{"level":30,"time":1768680044762,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","req":{"method":"POST","url":"/simulations","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044765,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","res":{"statusCode":400},"responseTime":2.6906999945640564,"msg":"request completed"}
+{"level":30,"time":1768680044791,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","req":{"method":"GET","url":"/simulations?clientId=189","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044796,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","res":{"statusCode":200},"responseTime":5.626699984073639,"msg":"request completed"}
+{"level":30,"time":1768680044820,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","req":{"method":"GET","url":"/simulations?clientId=190&includeAllVersions=true","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044823,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","res":{"statusCode":200},"responseTime":2.8847000002861023,"msg":"request completed"}
+{"level":30,"time":1768680044842,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","req":{"method":"GET","url":"/simulations/199","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044851,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","res":{"statusCode":200},"responseTime":8.713399976491928,"msg":"request completed"}
+{"level":30,"time":1768680044867,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","req":{"method":"GET","url":"/simulations/99999","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044869,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","res":{"statusCode":404},"responseTime":2.1134999990463257,"msg":"request completed"}
+{"level":30,"time":1768680044885,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","req":{"method":"PUT","url":"/simulations/200","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044891,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","res":{"statusCode":200},"responseTime":5.3765000104904175,"msg":"request completed"}
+{"level":30,"time":1768680044911,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","req":{"method":"PUT","url":"/simulations/201","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044913,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","res":{"statusCode":400},"responseTime":1.964599996805191,"msg":"request completed"}
+{"level":30,"time":1768680044926,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-9","req":{"method":"PUT","url":"/simulations/99999","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044929,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-9","res":{"statusCode":400},"responseTime":2.4953000247478485,"msg":"request completed"}
+{"level":30,"time":1768680044959,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-a","req":{"method":"DELETE","url":"/simulations/202","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044965,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-a","res":{"statusCode":204},"responseTime":5.69539999961853,"msg":"request completed"}
+{"level":30,"time":1768680044965,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-b","req":{"method":"GET","url":"/simulations/202","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044967,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-b","res":{"statusCode":404},"responseTime":1.957099974155426,"msg":"request completed"}
+{"level":30,"time":1768680044992,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-c","req":{"method":"DELETE","url":"/simulations/203","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680044994,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-c","res":{"statusCode":400},"responseTime":2.2439999878406525,"msg":"request completed"}
+{"level":30,"time":1768680045012,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-d","req":{"method":"DELETE","url":"/simulations/99999","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045013,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-d","res":{"statusCode":400},"responseTime":1.5340000092983246,"msg":"request completed"}
+{"level":30,"time":1768680045055,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-e","req":{"method":"POST","url":"/simulations/204/version","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045080,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-e","res":{"statusCode":201},"responseTime":24.632499992847443,"msg":"request completed"}
+{"level":30,"time":1768680045105,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-f","req":{"method":"POST","url":"/simulations/99999/version","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045108,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-f","res":{"statusCode":400},"responseTime":2.372099995613098,"msg":"request completed"}
+{"level":30,"time":1768680045151,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-g","req":{"method":"POST","url":"/simulations/206/duplicate","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045175,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-g","res":{"statusCode":201},"responseTime":24.26450002193451,"msg":"request completed"}
+FAIL tests/integration/simulations.test.ts
+  ● Simulation Routes › PUT /simulations/:id › should return 404 for non-existent simulation
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 404
+    Received: 400
+
+      177 |             });
+      178 |
+    > 179 |             expect(response.statusCode).toBe(404);
+          |                                         ^
+      180 |         });
+      181 |     });
+      182 |
+
+      at Object.<anonymous> (tests/integration/simulations.test.ts:179:41)
+
+  ● Simulation Routes › DELETE /simulations/:id › should return 404 for non-existent simulation
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 404
+    Received: 400
+
+      229 |             });
+      230 |
+    > 231 |             expect(response.statusCode).toBe(404);
+          |                                         ^
+      232 |         });
+      233 |     });
+      234 |
+
+      at Object.<anonymous> (tests/integration/simulations.test.ts:231:41)
+
+  ● Simulation Routes › POST /simulations/:id/version › should return 404 for non-existent simulation
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 404
+    Received: 400
+
+      258 |             });
+      259 |
+    > 260 |             expect(response.statusCode).toBe(404);
+          |                                         ^
+      261 |         });
+      262 |     });
+      263 |
+
+      at Object.<anonymous> (tests/integration/simulations.test.ts:260:41)
+
+{"level":30,"time":1768680045208,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-h","req":{"method":"POST","url":"/simulations/209/duplicate","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045216,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-h","res":{"statusCode":400},"responseTime":7.369199991226196,"msg":"request completed"}
+{"level":30,"time":1768680045233,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-i","req":{"method":"POST","url":"/simulations/99999/duplicate","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045236,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-i","res":{"statusCode":400},"responseTime":2.1484000086784363,"msg":"request completed"}
+{"level":30,"time":1768680045699,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","req":{"method":"POST","url":"/assets","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045718,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","res":{"statusCode":201},"responseTime":18.8057000041008,"msg":"request completed"}
+{"level":30,"time":1768680045736,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","req":{"method":"POST","url":"/assets","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045751,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","res":{"statusCode":201},"responseTime":14.962599992752075,"msg":"request completed"}
+{"level":30,"time":1768680045785,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","req":{"method":"GET","url":"/assets?simulationId=212","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045790,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","res":{"statusCode":200},"responseTime":4.98539999127388,"msg":"request completed"}
+{"level":30,"time":1768680045815,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","req":{"method":"GET","url":"/assets/77","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045820,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","res":{"statusCode":200},"responseTime":5.088100016117096,"msg":"request completed"}
+{"level":30,"time":1768680045833,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","req":{"method":"GET","url":"/assets/99999","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045834,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","res":{"statusCode":404},"responseTime":1.5742999911308289,"msg":"request completed"}
+{"level":30,"time":1768680045853,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","req":{"method":"PUT","url":"/assets/78","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045860,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","res":{"statusCode":200},"responseTime":7.584299981594086,"msg":"request completed"}
+{"level":30,"time":1768680045884,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","req":{"method":"DELETE","url":"/assets/79","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045887,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","res":{"statusCode":204},"responseTime":3.4236000180244446,"msg":"request completed"}
+{"level":30,"time":1768680045911,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","req":{"method":"POST","url":"/assets/80/records","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045915,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","res":{"statusCode":201},"responseTime":3.646100014448166,"msg":"request completed"}
+PASS tests/integration/assets.test.ts
+{"level":30,"time":1768680045938,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-9","req":{"method":"GET","url":"/assets/81/records","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045940,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-9","res":{"statusCode":200},"responseTime":2.3973000049591064,"msg":"request completed"}
+{"level":30,"time":1768680045964,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-a","req":{"method":"PUT","url":"/assets/82/records/87","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045968,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-a","res":{"statusCode":200},"responseTime":4.208000004291534,"msg":"request completed"}
+{"level":30,"time":1768680045993,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-b","req":{"method":"POST","url":"/assets/83/quick-update","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680045996,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-b","res":{"statusCode":201},"responseTime":3.116899996995926,"msg":"request completed"}
+{"level":30,"time":1768680046345,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","req":{"method":"POST","url":"/movements","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680046352,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","res":{"statusCode":201},"responseTime":7.2723000049591064,"msg":"request completed"}
+{"level":30,"time":1768680046376,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","req":{"method":"POST","url":"/movements","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680046382,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","res":{"statusCode":201},"responseTime":5.8091999888420105,"msg":"request completed"}
+{"level":30,"time":1768680046406,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","req":{"method":"GET","url":"/movements?simulationId=222","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680046411,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","res":{"statusCode":200},"responseTime":4.832199990749359,"msg":"request completed"}
+{"level":30,"time":1768680046439,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","req":{"method":"GET","url":"/movements?simulationId=223&type=INCOME","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680046443,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","res":{"statusCode":200},"responseTime":4.107600003480911,"msg":"request completed"}
+{"level":30,"time":1768680046470,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","req":{"method":"GET","url":"/movements/73","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680046478,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","res":{"statusCode":200},"responseTime":8.30340000987053,"msg":"request completed"}
+{"level":30,"time":1768680046499,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","req":{"method":"GET","url":"/movements/99999","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680046501,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","res":{"statusCode":404},"responseTime":2.7419999837875366,"msg":"request completed"}
+{"level":30,"time":1768680046523,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","req":{"method":"PUT","url":"/movements/74","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680046529,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","res":{"statusCode":200},"responseTime":6.537200003862381,"msg":"request completed"}
+{"level":30,"time":1768680046557,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","req":{"method":"DELETE","url":"/movements/75","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680046562,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","res":{"statusCode":204},"responseTime":5.058699995279312,"msg":"request completed"}
+{"level":30,"time":1768680046562,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-9","req":{"method":"GET","url":"/movements/75","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680046565,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-9","res":{"statusCode":404},"responseTime":2.335099995136261,"msg":"request completed"}
+PASS tests/integration/movements.test.ts
+{"level":30,"time":1768680047413,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","req":{"method":"POST","url":"/projections","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680047430,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","res":{"statusCode":200},"responseTime":16.610400021076202,"msg":"request completed"}
+{"level":30,"time":1768680047466,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","req":{"method":"POST","url":"/projections","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680047472,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","res":{"statusCode":200},"responseTime":6.768599987030029,"msg":"request completed"}
+{"level":30,"time":1768680047473,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","req":{"method":"POST","url":"/projections","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680047479,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","res":{"statusCode":200},"responseTime":6.488599985837936,"msg":"request completed"}
+{"level":30,"time":1768680047503,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","req":{"method":"POST","url":"/projections","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680047506,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","res":{"statusCode":400},"responseTime":3.113899976015091,"msg":"request completed"}
+PASS tests/integration/projections.test.ts
+{"level":30,"time":1768680047555,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","req":{"method":"POST","url":"/projections/compare","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680047569,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","res":{"statusCode":200},"responseTime":14.23530000448227,"msg":"request completed"}
+{"level":30,"time":1768680048299,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","req":{"method":"POST","url":"/clients","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680048309,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","res":{"statusCode":201},"responseTime":8.87389999628067,"msg":"request completed"}
+{"level":30,"time":1768680048332,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","req":{"method":"POST","url":"/clients","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680048333,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","res":{"statusCode":400},"err":{"type":"Error","message":"body must have required property 'birthDate'","stack":"Error: body must have required property 'birthDate'\n    at defaultSchemaErrorFormatter (C:\\Users\\Vitor\\Documents\\mfo-v4\\backend\\node_modules\\fastify\\lib\\context.js:114:10)\n    at wrapValidationError (C:\\Users\\Vitor\\Documents\\mfo-v4\\backend\\node_modules\\fastify\\lib\\validation.js:249:17)\n    at validate (C:\\Users\\Vitor\\Documents\\mfo-v4\\backend\\node_modules\\fastify\\lib\\validation.js:167:16)\n    at preValidationCallback (C:\\Users\\Vitor\\Documents\\mfo-v4\\backend\\node_modules\\fastify\\lib\\handleRequest.js:93:25)\n    at handler (C:\\Users\\Vitor\\Documents\\mfo-v4\\backend\\node_modules\\fastify\\lib\\handleRequest.js:77:7)\n    at C:\\Users\\Vitor\\Documents\\mfo-v4\\backend\\node_modules\\fastify\\lib\\contentTypeParser.js:199:9\n    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)\n    at done (C:\\Users\\Vitor\\Documents\\mfo-v4\\backend\\node_modules\\fastify\\lib\\contentTypeParser.js:192:14)\n    at Parser.defaultJsonParser [as fn] (C:\\Users\\Vitor\\Documents\\mfo-v4\\backend\\node_modules\\fastify\\lib\\contentTypeParser.js:304:5)\n    at Request.onEnd (C:\\Users\\Vitor\\Documents\\mfo-v4\\backend\\node_modules\\fastify\\lib\\contentTypeParser.js:283:27)\n    at Request.emit (node:events:518:28)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at processTicksAndRejections (node:internal/process/task_queues:90:21)","statusCode":400,"code":"FST_ERR_VALIDATION","validation":[{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"birthDate"},"message":"must have required property 'birthDate'"}],"validationContext":"body"},"msg":"body must have required property 'birthDate'"}
+{"level":30,"time":1768680048336,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","res":{"statusCode":400},"responseTime":3.782100021839142,"msg":"request completed"}
+{"level":30,"time":1768680048361,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","req":{"method":"GET","url":"/clients","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680048366,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","res":{"statusCode":200},"responseTime":4.629299998283386,"msg":"request completed"}
+{"level":30,"time":1768680048392,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","req":{"method":"GET","url":"/clients/222","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680048398,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","res":{"statusCode":200},"responseTime":6.259099990129471,"msg":"request completed"}
+PASS tests/integration/clients.test.ts
+{"level":30,"time":1768680048417,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","req":{"method":"GET","url":"/clients/99999","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680048419,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","res":{"statusCode":404},"responseTime":2.097799986600876,"msg":"request completed"}
+{"level":30,"time":1768680048438,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","req":{"method":"PUT","url":"/clients/223","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680048445,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","res":{"statusCode":200},"responseTime":6.436800003051758,"msg":"request completed"}
+{"level":30,"time":1768680048467,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","req":{"method":"DELETE","url":"/clients/224","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680048470,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","res":{"statusCode":204},"responseTime":3.8454000055789948,"msg":"request completed"}
+{"level":30,"time":1768680048471,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","req":{"method":"GET","url":"/clients/224","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680048474,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","res":{"statusCode":404},"responseTime":3.3815999925136566,"msg":"request completed"}
+{"level":30,"time":1768680049019,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","req":{"method":"POST","url":"/insurances","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680049028,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-1","res":{"statusCode":201},"responseTime":9.220200002193451,"msg":"request completed"}
+{"level":30,"time":1768680049051,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","req":{"method":"POST","url":"/insurances","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680049055,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-2","res":{"statusCode":201},"responseTime":3.970500022172928,"msg":"request completed"}
+{"level":30,"time":1768680049086,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","req":{"method":"GET","url":"/insurances?simulationId=233","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680049090,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-3","res":{"statusCode":200},"responseTime":4.3203000128269196,"msg":"request completed"}
+{"level":30,"time":1768680049118,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","req":{"method":"GET","url":"/insurances/34","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+PASS tests/integration/insurances.test.ts
+{"level":30,"time":1768680049125,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-4","res":{"statusCode":200},"responseTime":7.392899990081787,"msg":"request completed"}
+{"level":30,"time":1768680049142,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","req":{"method":"GET","url":"/insurances/99999","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680049144,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-5","res":{"statusCode":404},"responseTime":2.1771000027656555,"msg":"request completed"}
+{"level":30,"time":1768680049167,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","req":{"method":"PUT","url":"/insurances/35","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680049173,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-6","res":{"statusCode":200},"responseTime":5.483599990606308,"msg":"request completed"}
+{"level":30,"time":1768680049198,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","req":{"method":"DELETE","url":"/insurances/36","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680049203,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-7","res":{"statusCode":204},"responseTime":4.847000002861023,"msg":"request completed"}
+{"level":30,"time":1768680049203,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","req":{"method":"GET","url":"/insurances/36","hostname":"localhost:80","remoteAddress":"127.0.0.1"},"msg":"incoming request"}
+{"level":30,"time":1768680049206,"pid":25044,"hostname":"LAPTOP-ERD5K1S8","reqId":"req-8","res":{"statusCode":404},"responseTime":2.374899983406067,"msg":"request completed"}
+PASS tests/unit/engine/projection.engine.test.ts
+------------------------|---------|----------|---------|---------|--------------------
+File                    | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s  
+------------------------|---------|----------|---------|---------|--------------------
+All files               |   89.76 |    66.19 |   94.89 |   89.74 |                    
+ src                    |   95.83 |      100 |      50 |   95.83 |                    
+  app.ts                |   95.83 |      100 |      50 |   95.83 | 57                 
+ src/engine             |   83.33 |    69.23 |     100 |   83.17 |                    
+  projection.engine.ts  |   83.33 |    69.23 |     100 |   83.17 | 83,101,184,225-249 
+ src/lib                |     100 |       50 |     100 |     100 |                    
+  prisma.ts             |     100 |       50 |     100 |     100 | 4                  
+ src/routes             |   94.84 |    57.89 |     100 |   94.84 |                    
+  asset.routes.ts       |   93.87 |      100 |     100 |   93.87 | 117,142,225        
+  client.routes.ts      |   92.85 |      100 |     100 |   92.85 | 122,147            
+  insurance.routes.ts   |    93.1 |      100 |     100 |    93.1 | 112,137            
+  movement.routes.ts    |    93.1 |      100 |     100 |    93.1 | 115,140            
+  projection.routes.ts  |   93.33 |       25 |     100 |   93.33 | 98                 
+  simulation.routes.ts  |     100 |    54.54 |     100 |     100 | 35,115-190         
+ src/schemas            |     100 |      100 |     100 |     100 |                    
+  asset.schema.ts       |     100 |      100 |     100 |     100 |                    
+  client.schema.ts      |     100 |      100 |     100 |     100 |                    
+  insurance.schema.ts   |     100 |      100 |     100 |     100 |                    
+  movement.schema.ts    |     100 |      100 |     100 |     100 |                    
+  projection.schema.ts  |     100 |      100 |     100 |     100 |                    
+  simulation.schema.ts  |     100 |      100 |     100 |     100 |                    
+ src/services           |    83.8 |    67.07 |      90 |    83.8 |                    
+  asset.service.ts      |   94.44 |    77.77 |    90.9 |   94.44 | 129                
+  client.service.ts     |     100 |       75 |     100 |     100 | 36                 
+  insurance.service.ts  |   72.72 |    56.25 |   83.33 |   72.72 | 57-59              
+  movement.service.ts   |     100 |    68.18 |     100 |     100 | 45-46,48-51        
+  projection.service.ts |     100 |       50 |     100 |     100 | 43                 
+  simulation.service.ts |    77.1 |    68.96 |   81.81 |    77.1 | 180,279,325-414    
+------------------------|---------|----------|---------|---------|--------------------
+Jest: "global" coverage threshold for branches (80%) not met: 66.19%
+
+Test Suites: 1 failed, 6 passed, 7 total
+Tests:       3 failed, 59 passed, 62 total
+Snapshots:   0 total
+Time:        6.335 s
+Ran all test suites.

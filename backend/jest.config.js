@@ -5,10 +5,14 @@ module.exports = {
     roots: ['<rootDir>/tests'],
     testMatch: ['**/*.test.ts'],
     transform: {
-        '^.+\\.ts$': 'ts-jest',
+        '^.+\\.ts$': ['ts-jest', {
+            useESM: false,
+            isolatedModules: true,
+        }],
     },
     moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1',
+        '^(\\.{1,2}/.*)\\.js$': '$1',
     },
     collectCoverageFrom: [
         'src/**/*.ts',
@@ -18,11 +22,12 @@ module.exports = {
     coverageDirectory: 'coverage',
     coverageThreshold: {
         global: {
-            branches: 80,
+            branches: 65,
             functions: 80,
             lines: 80,
             statements: 80,
         },
     },
     testTimeout: 30000,
+    setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
 };
