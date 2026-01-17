@@ -43,10 +43,17 @@ export function SimulationPill({
     const color = getColor();
 
     return (
-        <button
+        <div
+            role="button"
+            tabIndex={0}
             onClick={onClick}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    onClick();
+                }
+            }}
             className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-full border transition-all',
+                'flex items-center gap-2 px-4 py-2 rounded-full border transition-all cursor-pointer select-none',
                 'text-sm font-medium',
                 isSelected
                     ? 'bg-transparent'
@@ -70,12 +77,12 @@ export function SimulationPill({
                         e.stopPropagation();
                         onMenuClick();
                     }}
-                    className="ml-1 text-muted-foreground hover:text-foreground"
+                    className="ml-1 text-muted-foreground hover:text-foreground p-0.5 rounded-full hover:bg-white/10 transition-colors"
                 >
                     <MoreVertical className="h-4 w-4" />
                 </button>
             )}
-        </button>
+        </div>
     );
 }
 

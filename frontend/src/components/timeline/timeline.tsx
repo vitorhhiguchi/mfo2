@@ -1,14 +1,8 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-
-interface TimelineEvent {
-    id: number;
-    year: number;
-    label: string;
-    value: number;
-    type: 'income' | 'expense';
-}
+import { Plus } from 'lucide-react';
+import { TimelineEvent } from '@/types';
 
 interface TimelineProps {
     incomeEvents: TimelineEvent[];
@@ -16,7 +10,7 @@ interface TimelineProps {
     startYear: number;
     endYear: number;
     clientBirthYear: number;
-    onAddClick?: () => void;
+    onAddClick: () => void;
 }
 
 export function Timeline({
@@ -27,160 +21,166 @@ export function Timeline({
     clientBirthYear,
     onAddClick,
 }: TimelineProps) {
-    const years = Array.from(
-        { length: Math.ceil((endYear - startYear) / 5) + 1 },
-        (_, i) => startYear + i * 5
-    );
+    // Generate year markers (every 5 years)
+    const years: number[] = [];
+    for (let y = startYear; y <= endYear; y += 5) {
+        years.push(y);
+    }
+
+    const totalYears = endYear - startYear;
 
     const getPosition = (year: number) => {
-        return ((year - startYear) / (endYear - startYear)) * 100;
+        return ((year - startYear) / totalYears) * 100;
     };
 
-    const getAge = (year: number) => year - clientBirthYear;
+    const formatCurrency = (val: number) => {
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            maximumFractionDigits: 0,
+        }).format(val);
+    };
 
     return (
-        <div className="w-full space-y-2">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-medium text-foreground">Timeline</h3>
-                {onAddClick && (
-                    <button
-                        onClick={onAddClick}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1 border border-border rounded-lg hover:border-primary"
-                    >
-                        + Adicionar
-                    </button>
-                )}
+        <div className="w-full">
+            <div className="flex items-center justify-between mb-8">
+                <h3 className="text-xl font-medium" style={{ color: '#67AEFA' }}>Timeline</h3>
+                <button
+                    onClick={onAddClick}
+                    className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#333333] text-sm text-muted-foreground hover:text-foreground hover:border-[#444444] transition-colors"
+                >
+                    <Plus className="h-4 w-4" />
+                    Adicionar
+                </button>
             </div>
 
-            {/* Income Track (Green) */}
-            <div className="relative">
-                <div className="absolute left-12 right-0 flex items-center">
-                    <span className="absolute -left-12 text-xs text-green-400 font-medium w-10">
-                        Salário
-                    </span>
-                    {/* Track line */}
-                    <div className="w-full h-0.5 bg-green-500/30 relative">
-                        {/* Events */}
-                        {incomeEvents.map((event) => (
+            <div className="relative pt-12 pb-8 px-4">
+                {/* Main Axis Line */}
+                <div className="absolute top-1/2 left-0 w-full h-px bg-[#333333] -translate-y-1/2" />
+
+                {/* Year/Age Markers - Centered Ruler */}
+                <div className="relative h-12 flex items-center">
+                    {years.map((year) => {
+                        const age = year - clientBirthYear;
+                        const left = `${getPosition(year)}%`;
+
+                        return (
+                            <div
+                                key={year}
+                                className="absolute transform -translate-x-1/2 flex flex-col items-center gap-1"
+                                style={{ left }}
+                            >
+                                {/* Tick mark */}
+                                <div className="h-3 w-px bg-[#333333]" />
+
+                                <span className="text-sm font-medium text-foreground">{year}</span>
+                                <span className="text-xs text-muted-foreground">{age}</span>
+                            </div>
+                        );
+                    })}
+
+                    {/* Minor ticks (every 1 year) */}
+                    {Array.from({ length: totalYears + 1 }).map((_, i) => {
+                        const year = startYear + i;
+                        if (year % 5 === 0) return null; // Skip major ticks
+                        return (
+                            <div
+                                key={year}
+                                className="absolute h-1.5 w-px bg-[#262626] top-1/2 -translate-y-1/2 transform -translate-x-1/2"
+                                style={{ left: `${getPosition(year)}%` }}
+                            />
+                        );
+                    })}
+                </div>
+
+                {/* Income Track (Green) - Above */}
+                <div className="absolute top-0 left-0 w-full">
+                    {incomeEvents.map((event) => {
+                        const startPos = getPosition(event.startYear);
+                        const endPos = getPosition(event.endYear || endYear);
+                        const width = endPos - startPos;
+
+                        return (
                             <div
                                 key={event.id}
-                                className="absolute top-1/2 -translate-y-1/2 group"
-                                style={{ left: `${getPosition(event.year)}%` }}
+                                className="absolute top-0"
+                                style={{ left: `${startPos}%`, width: `${width}%` }}
                             >
-                                <div className="w-3 h-3 bg-green-500 rounded-full cursor-pointer hover:scale-125 transition-transform" />
-                                {/* Label */}
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                    <div className="bg-card border border-border rounded px-2 py-1 text-xs whitespace-pre-line text-center min-w-max">
-                                        <span className="text-green-400">{event.label}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                        {/* Lines connecting events */}
-                        {incomeEvents.slice(0, -1).map((event, index) => {
-                            const nextEvent = incomeEvents[index + 1];
-                            const startPos = getPosition(event.year);
-                            const endPos = getPosition(nextEvent.year);
-                            return (
+                                {/* Line */}
                                 <div
-                                    key={`line-${event.id}`}
-                                    className="absolute h-0.5 bg-green-500"
-                                    style={{
-                                        left: `${startPos}%`,
-                                        width: `${endPos - startPos}%`,
-                                    }}
+                                    className="h-0.5 w-full absolute top-5"
+                                    style={{ backgroundColor: '#00C900' }}
                                 />
-                            );
-                        })}
-                    </div>
-                </div>
-                <div className="h-8" />
-            </div>
 
-            {/* Year Scale */}
-            <div className="relative pl-12">
-                <div className="flex justify-between text-xs text-muted-foreground">
-                    {years.map((year) => (
-                        <div
-                            key={year}
-                            className="flex flex-col items-center"
-                            style={{
-                                position: 'absolute',
-                                left: `calc(${getPosition(year)}% + 48px)`,
-                                transform: 'translateX(-50%)',
-                            }}
-                        >
-                            <span className="text-muted-foreground">Ano</span>
-                            <span className="font-medium text-foreground">{year}</span>
-                            <span className="text-muted-foreground">Idade</span>
-                            <span className="font-medium text-foreground">{getAge(year)}</span>
-                        </div>
-                    ))}
-                </div>
-                <div className="h-12" />
-            </div>
+                                {/* Start Dot */}
+                                <div
+                                    className="absolute top-3 w-4 h-4 rounded-full border-2 border-background z-10"
+                                    style={{ backgroundColor: '#00C900' }}
+                                />
 
-            {/* Expense Track (Red) */}
-            <div className="relative">
-                <div className="absolute left-12 right-0 flex items-center">
-                    <span className="absolute -left-12 text-xs text-red-400 font-medium w-10 leading-tight">
-                        Custo<br />de vida
-                    </span>
-                    {/* Track line */}
-                    <div className="w-full h-0.5 bg-red-500/30 relative">
-                        {/* Events */}
-                        {expenseEvents.map((event) => (
+                                {/* End Dot (if specific end year) */}
+                                {event.endYear && (
+                                    <div
+                                        className="absolute top-3 right-0 w-4 h-4 rounded-full border-2 border-background z-10 translate-x-1/2"
+                                        style={{ backgroundColor: '#00C900' }}
+                                    />
+                                )}
+
+                                {/* Label */}
+                                <span
+                                    className="absolute -top-6 text-xs whitespace-nowrap"
+                                    style={{ color: '#00C900' }}
+                                >
+                                    {event.name}
+                                    {event.value && <span className="ml-1 opacity-80">{formatCurrency(event.value)}</span>}
+                                </span>
+
+                                {/* Value - Optional, if needed separately */}
+                                {/* <span className="absolute -top-10 text-xs text-muted-foreground whitespace-nowrap">
+                  {formatCurrency(event.value)}
+                </span> */}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Expense Track (Red) - Below */}
+                <div className="absolute bottom-0 left-0 w-full translate-y-full">
+                    {expenseEvents.map((event) => {
+                        const startPos = getPosition(event.startYear);
+                        const endPos = getPosition(event.endYear || endYear);
+                        const width = endPos - startPos;
+
+                        return (
                             <div
                                 key={event.id}
-                                className="absolute top-1/2 -translate-y-1/2 group"
-                                style={{ left: `${getPosition(event.year)}%` }}
+                                className="absolute top-0"
+                                style={{ left: `${startPos}%`, width: `${width}%` }}
                             >
-                                <div className="w-3 h-3 bg-red-500 rounded-full cursor-pointer hover:scale-125 transition-transform" />
+                                {/* Line */}
+                                <div
+                                    className="h-0.5 w-full absolute top-2"
+                                    style={{ backgroundColor: '#FF5151' }}
+                                />
+
+                                {/* Start Dot */}
+                                <div
+                                    className="absolute top-0 w-4 h-4 rounded-full border-2 border-background z-10"
+                                    style={{ backgroundColor: '#FF5151' }}
+                                />
+
                                 {/* Label */}
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                    <div className="bg-card border border-border rounded px-2 py-1 text-xs whitespace-nowrap">
-                                        <span className="text-red-400">{event.label}</span>
-                                    </div>
+                                <div
+                                    className="absolute top-6 left-0 text-xs flex flex-col"
+                                    style={{ color: '#FF5151' }}
+                                >
+                                    <span className="whitespace-nowrap font-medium">{event.name}</span>
+                                    <span className="whitespace-nowrap opacity-80">{formatCurrency(event.value)}</span>
                                 </div>
                             </div>
-                        ))}
-                        {/* Lines connecting events */}
-                        {expenseEvents.slice(0, -1).map((event, index) => {
-                            const nextEvent = expenseEvents[index + 1];
-                            const startPos = getPosition(event.year);
-                            const endPos = getPosition(nextEvent.year);
-                            return (
-                                <div
-                                    key={`line-${event.id}`}
-                                    className="absolute h-0.5 bg-red-500"
-                                    style={{
-                                        left: `${startPos}%`,
-                                        width: `${endPos - startPos}%`,
-                                    }}
-                                />
-                            );
-                        })}
-                    </div>
+                        );
+                    })}
                 </div>
-                <div className="h-8" />
-            </div>
-
-            {/* Expense values */}
-            <div className="relative pl-12 text-xs">
-                {expenseEvents.map((event) => (
-                    <span
-                        key={event.id}
-                        className="absolute text-red-400"
-                        style={{
-                            left: `calc(${getPosition(event.year)}% + 48px)`,
-                            transform: 'translateX(-50%)',
-                        }}
-                    >
-                        {event.label}
-                    </span>
-                ))}
-                <div className="h-6" />
             </div>
         </div>
     );

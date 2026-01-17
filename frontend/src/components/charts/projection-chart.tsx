@@ -9,7 +9,6 @@ import {
     Tooltip,
     ResponsiveContainer,
     Legend,
-    ReferenceDot,
 } from 'recharts';
 import { YearProjection } from '@/types';
 
@@ -68,27 +67,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         );
     }
     return null;
-};
-
-// Custom dot component
-const CustomDot = (props: any) => {
-    const { cx, cy, stroke, index, dataLength } = props;
-
-    // Show dots at significant points (every 5-10 years or at peaks)
-    const showDot = index % 10 === 0 || index === dataLength - 1;
-
-    if (!showDot) return null;
-
-    return (
-        <circle
-            cx={cx}
-            cy={cy}
-            r={6}
-            fill={stroke}
-            stroke="#0f0f0f"
-            strokeWidth={2}
-        />
-    );
 };
 
 export function ProjectionChart({ projections }: ProjectionChartProps) {
@@ -159,13 +137,8 @@ export function ProjectionChart({ projections }: ProjectionChartProps) {
                             stroke={getColor(index, sim.isOriginal)}
                             strokeWidth={2}
                             strokeDasharray={sim.isDashed ? '8 4' : undefined}
-                            dot={(props) => (
-                                <CustomDot
-                                    {...props}
-                                    dataLength={chartData.length}
-                                />
-                            )}
-                            activeDot={{ r: 8, fill: getColor(index, sim.isOriginal), stroke: '#0f0f0f', strokeWidth: 2 }}
+                            dot={false} // Remove dots - only dashed lines
+                            activeDot={{ r: 6, fill: getColor(index, sim.isOriginal), stroke: '#0f0f0f', strokeWidth: 2 }}
                         />
                     ))}
                 </LineChart>

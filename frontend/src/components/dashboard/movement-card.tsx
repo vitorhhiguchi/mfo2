@@ -6,88 +6,61 @@ import type { Movement } from '@/types';
 
 interface MovementCardProps {
     movement: Movement;
-    onClick?: () => void;
 }
 
-export function MovementCard({ movement, onClick }: MovementCardProps) {
-    const isIncome = movement.type === 'INCOME';
+export function MovementCard({ movement }: MovementCardProps) {
+    const isCredit = movement.value > 0;
 
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL',
             maximumFractionDigits: 0,
-        }).format(val);
+        }).format(Math.abs(val));
     };
 
-    const formatDate = (date: string) => {
-        return new Date(date).toLocaleDateString('pt-BR', {
+    const formatDate = (dateStr?: string) => {
+        if (!dateStr) return '';
+        const date = new Date(dateStr);
+        if (isNaN(date.getTime())) return '';
+        return new Intl.DateTimeFormat('pt-BR', {
             day: '2-digit',
             month: '2-digit',
             year: '2-digit',
-        });
-    };
-
-    const getFrequencyLabel = (freq: string) => {
-        switch (freq) {
-            case 'MONTHLY':
-                return 'Mensal';
-            case 'ANNUALLY':
-                return 'Anual';
-            case 'ONE_TIME':
-                return 'Única';
-            default:
-                return freq;
-        }
-    };
-
-    const getCategoryLabel = (category?: string | null) => {
-        if (!category) return isIncome ? 'Crédito' : 'Dependente';
-        switch (category) {
-            case 'WORK':
-                return 'Trabalho';
-            case 'PASSIVE':
-                return 'Passivo';
-            case 'OTHER':
-                return 'Crédito';
-            default:
-                return category;
-        }
+        }).format(date);
     };
 
     return (
-        <div
-            onClick={onClick}
-            className={cn(
-                'bg-card border border-border rounded-xl p-4 cursor-pointer',
-                'hover:border-primary/50 transition-colors'
-            )}
-        >
-            <div className="flex justify-between items-start">
-                <div className="flex-1">
-                    <h4 className="font-medium text-foreground">{movement.name}</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                        {formatDate(movement.startDate)}
-                        {movement.endDate && ` - ${formatDate(movement.endDate)}`}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                        Frequência: <span className="text-foreground">{getFrequencyLabel(movement.frequency)}</span>
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                        {getCategoryLabel(movement.category)}
-                    </p>
+        <div className="p-5 rounded-2xl bg-[#1a1a1a] border border-[#67AEFA] relative flex justify-between items-start">
+            <div>
+                <h3 className="text-lg font-normal text-[#e5e5e5] mb-1">{movement.name}</h3>
+                <div className="text-sm text-muted-foreground mb-1">
+                    {formatDate(movement.startDate)} {movement.endDate ? `- ${formatDate(movement.endDate)}` : ''}
                 </div>
-                <div className={cn(
-                    'flex items-center gap-1 text-lg font-semibold',
-                    isIncome ? 'text-green-400' : 'text-red-400'
-                )}>
-                    {isIncome ? (
-                        <ArrowUp className="h-4 w-4" />
-                    ) : (
-                        <ArrowDown className="h-4 w-4" />
+                <div className="text-sm text-muted-foreground">
+                    Frequência: <span className="text-[#e5e5e5]">{movement.frequency === 'MONTHLY' ? 'Mensal' : movement.frequency === 'ANNUALLY' ? 'Anual' : 'Única'}</span>
+                </div>
+                {movement.category && (
+                    <div className="text-sm text-muted-foreground mt-1">
+                        {movement.category === 'WORK' ? 'Trabalho' : movement.category === 'PASSIVE' ? 'Passiva' : 'Outros'}
+                    </div>
+                )}
+            </div>
+
+            <div className="flex items-center gap-2 self-end mt-auto">
+                {isCredit ? (
+                    <ArrowUp className="h-4 w-4 text-[#00C900]" />
+                ) : (
+                    <ArrowDown className="h-4 w-4 text-[#FF5151]" />
+                )}
+                <span
+                    className={cn(
+                        "text-lg font-medium",
+                        isCredit ? "text-[#00C900]" : "text-[#FF5151]"
                     )}
+                >
                     {formatCurrency(movement.value)}
-                </div>
+                </span>
             </div>
         </div>
     );

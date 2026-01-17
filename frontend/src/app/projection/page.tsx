@@ -16,7 +16,7 @@ import {
     mockPatrimonySummaries
 } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Plus } from 'lucide-react';
 import type { Client } from '@/types';
 
 export default function ProjectionPage() {
@@ -96,38 +96,51 @@ export default function ProjectionPage() {
                                 age={summary.age}
                                 value={summary.value}
                                 percentChange={summary.percentChange}
-                                variant={summary.isHighlight ? 'highlight' : index === 0 ? 'blue' : 'default'}
+                                isHighlight={summary.isHighlight}
                             />
                         ))}
                     </div>
                 </div>
 
-                {/* Life Status Toggle - CENTERED */}
+                {/* Life Status Toggle & Suggestion - CENTERED */}
                 <div className="flex items-center justify-center gap-8 mb-6">
-                    <label className="flex items-center gap-2 cursor-pointer">
+                    <label className="flex items-center gap-2 cursor-pointer group">
+                        <div className={cn(
+                            "w-5 h-5 rounded-full border border-muted-foreground flex items-center justify-center transition-colors",
+                            lifeStatus === 'DEAD' && "border-primary bg-primary"
+                        )}>
+                            {lifeStatus === 'DEAD' && <div className="w-2 h-2 rounded-full bg-white" />}
+                        </div>
                         <input
                             type="radio"
                             name="lifeStatus"
                             checked={lifeStatus === 'DEAD'}
                             onChange={() => setLifeStatus('DEAD')}
-                            className="w-4 h-4 appearance-none border-2 border-muted-foreground rounded-full checked:border-primary checked:bg-primary"
+                            className="hidden"
                         />
-                        <span className="text-sm text-muted-foreground">Morto</span>
+                        <span className="text-base text-muted-foreground group-hover:text-foreground transition-colors">Morto</span>
                     </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
+
+                    <label className="flex items-center gap-2 cursor-pointer group">
+                        <div className={cn(
+                            "w-5 h-5 rounded-full border border-muted-foreground flex items-center justify-center transition-colors",
+                            lifeStatus === 'INVALID' && "border-primary bg-primary"
+                        )}>
+                            {lifeStatus === 'INVALID' && <div className="w-2 h-2 rounded-full bg-white" />}
+                        </div>
                         <input
                             type="radio"
                             name="lifeStatus"
                             checked={lifeStatus === 'INVALID'}
                             onChange={() => setLifeStatus('INVALID')}
-                            className="w-4 h-4 appearance-none border-2 border-muted-foreground rounded-full checked:border-primary checked:bg-primary"
+                            className="hidden"
                         />
-                        <span className="text-sm text-muted-foreground">Inválido</span>
+                        <span className="text-base text-muted-foreground group-hover:text-foreground transition-colors">Inválido</span>
                     </label>
 
-                    {/* Suggestion Select */}
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-primary/50 bg-transparent text-sm">
-                        <span style={{ color: '#48F7A1' }}>Sugestão</span>
+                    {/* Suggestion Select - styled like Figma */}
+                    <button className="flex items-center gap-4 px-4 py-2 rounded-full border border-[#333333] bg-[#1a1a1a] hover:border-[#444444] transition-colors min-w-[160px] justify-between">
+                        <span style={{ color: '#48F7A1' }} className="text-sm font-medium">Sugestão</span>
                         <ChevronDown className="h-4 w-4 text-muted-foreground" />
                     </button>
                 </div>
@@ -200,17 +213,18 @@ export default function ProjectionPage() {
 
                 {/* Movements Section */}
                 <div className="mb-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-foreground">Movimentações</h2>
-                        <div className="flex items-center gap-3">
-                            <div className="flex bg-[#1a1a1a] border border-[#333333] rounded-full p-1">
+                    <div className="flex flex-col gap-4 mb-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-lg font-normal text-[#67AEFA]">Movimentações</h2>
+
+                            <div className="flex bg-[#0f0f0f] border border-[#333333] rounded-full p-1">
                                 <button
                                     onClick={() => setMovementFilter('financial')}
                                     className={cn(
                                         'px-4 py-1.5 rounded-full text-sm transition-colors',
                                         movementFilter === 'financial'
-                                            ? 'bg-[#262626] text-foreground'
-                                            : 'text-muted-foreground'
+                                            ? 'bg-[#e5e5e5] text-black font-medium'
+                                            : 'text-muted-foreground hover:text-foreground'
                                     )}
                                 >
                                     Financeiras
@@ -220,15 +234,19 @@ export default function ProjectionPage() {
                                     className={cn(
                                         'px-4 py-1.5 rounded-full text-sm transition-colors',
                                         movementFilter === 'immobilized'
-                                            ? 'bg-[#262626] text-foreground'
-                                            : 'text-muted-foreground'
+                                            ? 'bg-[#e5e5e5] text-black font-medium'
+                                            : 'text-muted-foreground hover:text-foreground'
                                     )}
                                 >
                                     Imobilizadas
                                 </button>
                             </div>
-                            <button className="text-sm text-muted-foreground hover:text-foreground border border-[#333333] rounded-lg px-3 py-1.5 transition-colors">
-                                + Adicionar
+                        </div>
+
+                        <div className="flex justify-end">
+                            <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#333333] text-sm text-muted-foreground hover:text-foreground hover:border-[#444444] transition-colors">
+                                <Plus className="h-4 w-4" />
+                                Adicionar
                             </button>
                         </div>
                     </div>
@@ -245,9 +263,10 @@ export default function ProjectionPage() {
                 {/* Insurance Section */}
                 <div>
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-foreground">Seguros</h2>
-                        <button className="text-sm text-muted-foreground hover:text-foreground border border-[#333333] rounded-lg px-3 py-1.5 transition-colors">
-                            + Adicionar
+                        <h2 className="text-lg font-normal text-[#67AEFA]">Seguros</h2>
+                        <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#333333] text-sm text-muted-foreground hover:text-foreground hover:border-[#444444] transition-colors">
+                            <Plus className="h-4 w-4" />
+                            Adicionar
                         </button>
                     </div>
 

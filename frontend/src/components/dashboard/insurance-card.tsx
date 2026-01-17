@@ -5,10 +5,9 @@ import type { Insurance } from '@/types';
 
 interface InsuranceCardProps {
     insurance: Insurance;
-    onClick?: () => void;
 }
 
-export function InsuranceCard({ insurance, onClick }: InsuranceCardProps) {
+export function InsuranceCard({ insurance }: InsuranceCardProps) {
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('pt-BR', {
             style: 'currency',
@@ -17,57 +16,28 @@ export function InsuranceCard({ insurance, onClick }: InsuranceCardProps) {
         }).format(val);
     };
 
-    const getTypeLabel = (type: string) => {
-        switch (type) {
-            case 'LIFE':
-                return 'Seguro de Vida';
-            case 'DISABILITY':
-                return 'Seguro de Invalidez';
-            case 'HEALTH':
-                return 'Seguro Saúde';
-            case 'PROPERTY':
-                return 'Seguro Patrimonial';
-            default:
-                return type;
-        }
-    };
-
-    const getDurationLabel = (months: number) => {
-        const years = Math.floor(months / 12);
-        const remainingMonths = months % 12;
-        if (years > 0 && remainingMonths > 0) {
-            return `${years} anos e ${remainingMonths} meses`;
-        }
-        if (years > 0) {
-            return `${years} anos`;
-        }
-        return `${remainingMonths} meses`;
-    };
-
     return (
-        <div
-            onClick={onClick}
-            className={cn(
-                'bg-card border border-border rounded-xl p-4 cursor-pointer',
-                'hover:border-primary/50 transition-colors'
-            )}
-        >
-            <div className="flex justify-between items-start">
-                <div className="flex-1">
-                    <h4 className="font-medium text-foreground">{insurance.name}</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                        {getTypeLabel(insurance.type)}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                        Duração: <span className="text-foreground">{getDurationLabel(insurance.durationMonths)}</span>
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                        Prêmio: <span className="text-foreground">R$ {insurance.premium}/mês</span>
-                    </p>
+        <div className="p-5 rounded-2xl bg-[#1a1a1a] border border-[#67AEFA] relative flex justify-between items-start">
+            <div>
+                <h3 className="text-lg font-normal text-[#e5e5e5] mb-2">{insurance.name}</h3>
+
+                <div className="space-y-1">
+                    <div className="text-sm text-muted-foreground">
+                        Seguro de {insurance.type === 'LIFE' ? 'Vida' : 'Invalidez'}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                        Duração: <span className="text-[#e5e5e5]">15 anos</span>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                        Prêmio: <span className="text-[#e5e5e5]">{formatCurrency(insurance.premium)}/mês</span>
+                    </div>
                 </div>
-                <div className="text-lg font-semibold text-primary">
+            </div>
+
+            <div className="flex items-center self-end mt-auto">
+                <span className="text-lg font-medium text-[#a855f7]">
                     {formatCurrency(insurance.insuredValue)}
-                </div>
+                </span>
             </div>
         </div>
     );
