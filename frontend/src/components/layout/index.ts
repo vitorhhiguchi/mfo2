@@ -1,2 +1,3 @@
-// Layout Components barrel export
-// Sidebar, Header, MainLayout, etc.
+// Layout Components
+export { Sidebar } from './sidebar';
+export { MainLayout } from './main-layout';
