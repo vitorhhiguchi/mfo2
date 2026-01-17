@@ -1,16 +1,24 @@
 'use client';
 
 import {
-    AreaChart,
-    Area,
+    LineChart,
+    Line,
     XAxis,
     YAxis,
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
     Legend,
+    ReferenceDot,
 } from 'recharts';
 import { YearProjection } from '@/types';
+
+// Anka Design System Colors
+const ANKA_CHART_COLORS = {
+    yellow: '#F7B748',  // Plano Original (linha contínua amarela)
+    blue: '#67AEFA',    // Comparação (linha pontilhada azul)
+    green: '#48F7A1',   // Situação Atual (linha pontilhada verde)
+};
 
 interface ProjectionChartProps {
     projections: {
@@ -19,15 +27,9 @@ interface ProjectionChartProps {
         projections: YearProjection[];
         color?: string;
         isOriginal?: boolean;
+        isDashed?: boolean;
     }[];
 }
-
-const COLORS = {
-    original: '#3b82f6', // blue for original plan
-    current: '#22c55e', // green
-    comparison: '#f59e0b', // yellow/orange
-    negative: '#ef4444', // red
-};
 
 // Format currency for Y axis
 const formatCurrency = (value: number) => {
@@ -44,7 +46,7 @@ const formatCurrency = (value: number) => {
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
+            <div className="bg-[#1a1a1a] border border-[#333333] rounded-lg p-3 shadow-lg">
                 <p className="text-sm font-medium text-foreground mb-2">Ano: {label}</p>
                 {payload.map((entry: any, index: number) => (
                     <div key={index} className="flex items-center gap-2 text-sm">
@@ -68,6 +70,27 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     return null;
 };
 
+// Custom dot component
+const CustomDot = (props: any) => {
+    const { cx, cy, stroke, index, dataLength } = props;
+
+    // Show dots at significant points (every 5-10 years or at peaks)
+    const showDot = index % 10 === 0 || index === dataLength - 1;
+
+    if (!showDot) return null;
+
+    return (
+        <circle
+            cx={cx}
+            cy={cy}
+            r={6}
+            fill={stroke}
+            stroke="#0f0f0f"
+            strokeWidth={2}
+        />
+    );
+};
+
 export function ProjectionChart({ projections }: ProjectionChartProps) {
     // Transform data for Recharts
     const chartData = projections[0]?.projections.map((p, index) => {
@@ -76,7 +99,7 @@ export function ProjectionChart({ projections }: ProjectionChartProps) {
             age: p.age,
         };
 
-        projections.forEach((sim, simIndex) => {
+        projections.forEach((sim) => {
             const projection = sim.projections[index];
             if (projection) {
                 dataPoint[sim.simulationName] = projection.patrimonyEnd;
@@ -87,74 +110,65 @@ export function ProjectionChart({ projections }: ProjectionChartProps) {
     }) || [];
 
     const getColor = (index: number, isOriginal?: boolean) => {
-        if (isOriginal) return COLORS.original;
-        const colors = [COLORS.current, COLORS.comparison, '#a855f7', '#14b8a6'];
+        if (isOriginal) return ANKA_CHART_COLORS.yellow;
+        const colors = [ANKA_CHART_COLORS.blue, ANKA_CHART_COLORS.green];
         return colors[index % colors.length];
     };
 
     return (
         <div className="w-full h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
+                <LineChart
                     data={chartData}
-                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                    margin={{ top: 10, right: 30, left: 10, bottom: 0 }}
                 >
-                    <defs>
-                        {projections.map((sim, index) => (
-                            <linearGradient
-                                key={sim.simulationId}
-                                id={`gradient-${sim.simulationId}`}
-                                x1="0"
-                                y1="0"
-                                x2="0"
-                                y2="1"
-                            >
-                                <stop
-                                    offset="5%"
-                                    stopColor={getColor(index, sim.isOriginal)}
-                                    stopOpacity={0.3}
-                                />
-                                <stop
-                                    offset="95%"
-                                    stopColor={getColor(index, sim.isOriginal)}
-                                    stopOpacity={0}
-                                />
-                            </linearGradient>
-                        ))}
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                    <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="#333333"
+                        horizontal={true}
+                        vertical={false}
+                    />
                     <XAxis
                         dataKey="year"
                         stroke="#666"
-                        tick={{ fill: '#999', fontSize: 12 }}
+                        tick={{ fill: '#999', fontSize: 11 }}
                         tickLine={{ stroke: '#666' }}
+                        axisLine={{ stroke: '#333333' }}
+                        interval={4}
                     />
                     <YAxis
                         stroke="#666"
-                        tick={{ fill: '#999', fontSize: 12 }}
+                        tick={{ fill: '#999', fontSize: 11 }}
                         tickLine={{ stroke: '#666' }}
+                        axisLine={{ stroke: '#333333' }}
                         tickFormatter={formatCurrency}
-                        width={80}
+                        width={70}
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend
-                        wrapperStyle={{ paddingTop: '20px' }}
+                        wrapperStyle={{ paddingTop: '10px' }}
                         formatter={(value) => (
                             <span className="text-sm text-muted-foreground">{value}</span>
                         )}
                     />
                     {projections.map((sim, index) => (
-                        <Area
+                        <Line
                             key={sim.simulationId}
                             type="monotone"
                             dataKey={sim.simulationName}
                             stroke={getColor(index, sim.isOriginal)}
                             strokeWidth={2}
-                            fill={`url(#gradient-${sim.simulationId})`}
-                            strokeDasharray={sim.isOriginal ? '5 5' : undefined}
+                            strokeDasharray={sim.isDashed ? '8 4' : undefined}
+                            dot={(props) => (
+                                <CustomDot
+                                    {...props}
+                                    dataLength={chartData.length}
+                                />
+                            )}
+                            activeDot={{ r: 8, fill: getColor(index, sim.isOriginal), stroke: '#0f0f0f', strokeWidth: 2 }}
                         />
                     ))}
-                </AreaChart>
+                </LineChart>
             </ResponsiveContainer>
         </div>
     );

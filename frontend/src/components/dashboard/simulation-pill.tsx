@@ -1,13 +1,21 @@
 'use client';
 
-import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { MoreVertical } from 'lucide-react';
 import type { Simulation } from '@/types';
+
+// Anka Design System Colors
+const ANKA_COLORS = {
+    blue: '#67AEFA',    // Plano Original
+    green: '#48F7A1',   // Situação Atual
+    yellow: '#F7B748',  // Realizado
+    gray: '#C9C9C9',    // Adicionar
+};
 
 interface SimulationPillProps {
     simulation: Simulation;
     isSelected: boolean;
-    isOriginal?: boolean;
+    variant: 'original' | 'current' | 'realized';
     onClick: () => void;
     onMenuClick?: () => void;
 }
@@ -15,10 +23,25 @@ interface SimulationPillProps {
 export function SimulationPill({
     simulation,
     isSelected,
-    isOriginal,
+    variant,
     onClick,
     onMenuClick,
 }: SimulationPillProps) {
+    const getColor = () => {
+        switch (variant) {
+            case 'original':
+                return ANKA_COLORS.blue;
+            case 'current':
+                return ANKA_COLORS.green;
+            case 'realized':
+                return ANKA_COLORS.yellow;
+            default:
+                return ANKA_COLORS.gray;
+        }
+    };
+
+    const color = getColor();
+
     return (
         <button
             onClick={onClick}
@@ -26,23 +49,21 @@ export function SimulationPill({
                 'flex items-center gap-2 px-4 py-2 rounded-full border transition-all',
                 'text-sm font-medium',
                 isSelected
-                    ? isOriginal
-                        ? 'bg-blue-600/20 border-blue-500 text-blue-400'
-                        : 'bg-yellow-600/20 border-yellow-500 text-yellow-400'
-                    : 'bg-muted/30 border-border text-muted-foreground hover:border-primary/50'
+                    ? 'bg-transparent'
+                    : 'bg-transparent border-[#333333] text-muted-foreground hover:border-[#444444]'
             )}
+            style={isSelected ? { borderColor: color } : undefined}
         >
             <div
-                className={cn(
-                    'w-3 h-3 rounded-full border-2',
-                    isSelected
-                        ? isOriginal
-                            ? 'bg-blue-500 border-blue-400'
-                            : 'bg-yellow-500 border-yellow-400'
-                        : 'border-muted-foreground'
-                )}
+                className="w-3 h-3 rounded-full border-2"
+                style={{
+                    borderColor: color,
+                    backgroundColor: isSelected ? color : 'transparent',
+                }}
             />
-            <span>{simulation.name}</span>
+            <span style={{ color: isSelected ? color : undefined }}>
+                {simulation.name}
+            </span>
             {onMenuClick && (
                 <button
                     onClick={(e) => {
@@ -51,7 +72,7 @@ export function SimulationPill({
                     }}
                     className="ml-1 text-muted-foreground hover:text-foreground"
                 >
-                    ⋮
+                    <MoreVertical className="h-4 w-4" />
                 </button>
             )}
         </button>
@@ -72,26 +93,32 @@ export function SimulationSelector({
     onAddClick,
 }: SimulationSelectorProps) {
     return (
-        <div className="flex items-center gap-3 flex-wrap">
-            {simulations.map((sim) => (
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+            {simulations.map((sim, index) => (
                 <SimulationPill
                     key={sim.id}
                     simulation={sim}
                     isSelected={selectedIds.includes(sim.id)}
-                    isOriginal={sim.isCurrentSituation}
+                    variant={sim.isCurrentSituation ? 'original' : 'current'}
                     onClick={() => onToggle(sim.id)}
+                    onMenuClick={() => { }}
                 />
             ))}
             <button
-                onClick={() => { }}
-                className="px-4 py-2 rounded-full bg-muted/30 border border-border text-sm text-muted-foreground hover:border-primary/50 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors"
+                style={{ borderColor: ANKA_COLORS.yellow, color: ANKA_COLORS.yellow }}
             >
+                <div
+                    className="w-3 h-3 rounded-full border-2"
+                    style={{ borderColor: ANKA_COLORS.yellow }}
+                />
                 Realizado
             </button>
             {onAddClick && (
                 <button
                     onClick={onAddClick}
-                    className="px-4 py-2 text-sm text-primary hover:text-primary/80 transition-colors"
+                    className="px-4 py-2 text-sm transition-colors"
+                    style={{ color: ANKA_COLORS.gray }}
                 >
                     + Adicionar Simulação
                 </button>

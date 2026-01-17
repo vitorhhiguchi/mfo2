@@ -46,40 +46,53 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/* Anka Theme - Always Dark Mode */
 :root {
   --radius: 0.625rem;
 
-  /* Anka Theme - Light Mode */
-  --background: #fafafa;
-  --foreground: #0f0f0f;
-  --card: #ffffff;
-  --card-foreground: #0f0f0f;
-  --popover: #ffffff;
-  --popover-foreground: #0f0f0f;
+  /* Dark Mode Base */
+  --background: #0f0f0f;
+  --foreground: #fafafa;
+  --card: #1a1a1a;
+  --card-foreground: #fafafa;
+  --popover: #1a1a1a;
+  --popover-foreground: #fafafa;
 
   /* Anka Orange Primary */
   --primary: #f05a28;
   --primary-foreground: #ffffff;
 
-  --secondary: #f5f5f5;
-  --secondary-foreground: #0f0f0f;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --accent: #f5f5f5;
-  --accent-foreground: #0f0f0f;
-  --destructive: #ef4444;
-  --border: #e5e5e5;
-  --input: #e5e5e5;
+  --secondary: #262626;
+  --secondary-foreground: #fafafa;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --accent: #262626;
+  --accent-foreground: #fafafa;
+  --destructive: #dc2626;
+  --border: #333333;
+  --input: #333333;
   --ring: #f05a28;
 
-  /* Chart Colors */
-  --chart-1: #f05a28;
-  --chart-2: #22c55e;
-  --chart-3: #3b82f6;
-  --chart-4: #a855f7;
-  --chart-5: #eab308;
+  /* Anka Design System Colors */
+  --anka-blue: #67AEFA;
+  --anka-green: #48F7A1;
+  --anka-yellow: #F7B748;
+  --anka-gray: #C9C9C9;
+  --anka-percent: #68AAF1;
+  --anka-gradient-blue: #6777FA;
+  --anka-gradient-green: #03B6AD;
 
-  /* Sidebar - Dark theme (always dark) */
+  /* Chart Colors */
+  --chart-1: #F7B748;
+  /* Yellow - Plano Original line */
+  --chart-2: #67AEFA;
+  /* Blue - comparison */
+  --chart-3: #48F7A1;
+  /* Green - Situação Atual */
+  --chart-4: #a855f7;
+  --chart-5: #14b8a6;
+
+  /* Sidebar - Same dark theme */
   --sidebar: #0f0f0f;
   --sidebar-foreground: #e5e5e5;
   --sidebar-primary: #f05a28;
@@ -90,45 +103,26 @@
   --sidebar-ring: #f05a28;
 }
 
+/* Force dark mode - no light mode */
 .dark {
-  --background: #0a0a0a;
+  --background: #0f0f0f;
   --foreground: #fafafa;
-  --card: #0f0f0f;
+  --card: #1a1a1a;
   --card-foreground: #fafafa;
-  --popover: #0f0f0f;
+  --popover: #1a1a1a;
   --popover-foreground: #fafafa;
-
-  /* Anka Orange Primary */
   --primary: #f05a28;
   --primary-foreground: #ffffff;
-
-  --secondary: #1a1a1a;
+  --secondary: #262626;
   --secondary-foreground: #fafafa;
-  --muted: #1a1a1a;
+  --muted: #262626;
   --muted-foreground: #a3a3a3;
-  --accent: #1a1a1a;
+  --accent: #262626;
   --accent-foreground: #fafafa;
   --destructive: #dc2626;
-  --border: #262626;
-  --input: #262626;
+  --border: #333333;
+  --input: #333333;
   --ring: #f05a28;
-
-  /* Chart Colors */
-  --chart-1: #f05a28;
-  --chart-2: #22c55e;
-  --chart-3: #3b82f6;
-  --chart-4: #a855f7;
-  --chart-5: #eab308;
-
-  /* Sidebar - Same as light mode (always dark) */
-  --sidebar: #0f0f0f;
-  --sidebar-foreground: #e5e5e5;
-  --sidebar-primary: #f05a28;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #262626;
-  --sidebar-accent-foreground: #e5e5e5;
-  --sidebar-border: #262626;
-  --sidebar-ring: #f05a28;
 }
 
 @layer base {
@@ -138,5 +132,36 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Custom utility classes for Anka design system */
+@layer utilities {
+  .text-anka-percent {
+    color: #68AAF1;
+  }
+
+  .border-anka-blue {
+    border-color: #67AEFA;
+  }
+
+  .border-anka-green {
+    border-color: #48F7A1;
+  }
+
+  .border-anka-yellow {
+    border-color: #F7B748;
+  }
+
+  .text-anka-gray {
+    color: #C9C9C9;
+  }
+
+  .bg-gradient-blue {
+    background: linear-gradient(to bottom, #6777FA, #4a5bc8);
+  }
+
+  .bg-gradient-green {
+    background: linear-gradient(to bottom, #03B6AD, #028a84);
   }
 }

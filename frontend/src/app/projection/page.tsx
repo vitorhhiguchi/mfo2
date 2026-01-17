@@ -16,11 +16,12 @@ import {
     mockPatrimonySummaries
 } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
+import { ChevronDown } from 'lucide-react';
 import type { Client } from '@/types';
 
 export default function ProjectionPage() {
     const [selectedClient, setSelectedClient] = useState<Client>(mockClients[0]);
-    const [selectedSimulationIds, setSelectedSimulationIds] = useState<number[]>([1]);
+    const [selectedSimulationIds, setSelectedSimulationIds] = useState<number[]>([1, 2]);
     const [lifeStatus, setLifeStatus] = useState<'ALIVE' | 'DEAD' | 'INVALID'>('ALIVE');
     const [movementFilter, setMovementFilter] = useState<'financial' | 'immobilized'>('financial');
 
@@ -80,7 +81,7 @@ export default function ProjectionPage() {
                                 <span className="text-3xl font-bold text-foreground">
                                     {formatCurrency(2679930)}
                                 </span>
-                                <span className="text-green-400 text-sm">+52,37%</span>
+                                <span className="text-sm" style={{ color: '#68AAF1' }}>+52,37%</span>
                             </div>
                         </div>
                     </div>
@@ -101,15 +102,15 @@ export default function ProjectionPage() {
                     </div>
                 </div>
 
-                {/* Life Status Toggle */}
-                <div className="flex items-center gap-6 mb-6">
+                {/* Life Status Toggle - CENTERED */}
+                <div className="flex items-center justify-center gap-8 mb-6">
                     <label className="flex items-center gap-2 cursor-pointer">
                         <input
                             type="radio"
                             name="lifeStatus"
                             checked={lifeStatus === 'DEAD'}
                             onChange={() => setLifeStatus('DEAD')}
-                            className="w-4 h-4 border-2 border-muted-foreground rounded-full"
+                            className="w-4 h-4 appearance-none border-2 border-muted-foreground rounded-full checked:border-primary checked:bg-primary"
                         />
                         <span className="text-sm text-muted-foreground">Morto</span>
                     </label>
@@ -119,18 +120,20 @@ export default function ProjectionPage() {
                             name="lifeStatus"
                             checked={lifeStatus === 'INVALID'}
                             onChange={() => setLifeStatus('INVALID')}
-                            className="w-4 h-4 border-2 border-muted-foreground rounded-full"
+                            className="w-4 h-4 appearance-none border-2 border-muted-foreground rounded-full checked:border-primary checked:bg-primary"
                         />
                         <span className="text-sm text-muted-foreground">Inválido</span>
                     </label>
-                    <div className="flex-1" />
-                    <select className="bg-card border border-border rounded-lg px-4 py-2 text-sm">
-                        <option>Sugestão</option>
-                    </select>
+
+                    {/* Suggestion Select */}
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-primary/50 bg-transparent text-sm">
+                        <span style={{ color: '#48F7A1' }}>Sugestão</span>
+                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                    </button>
                 </div>
 
                 {/* Projection Chart Section */}
-                <div className="bg-card border border-border rounded-2xl p-6 mb-6">
+                <div className="bg-[#1a1a1a] border border-[#333333] rounded-2xl p-6 mb-6">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-lg font-semibold text-foreground">Projeção Patrimonial</h2>
                         <div className="flex gap-4 text-sm">
@@ -156,14 +159,24 @@ export default function ProjectionPage() {
                                 simulationName: 'Situação atual',
                                 projections: mockProjections.map((p) => ({
                                     ...p,
-                                    patrimonyEnd: p.patrimonyEnd * 0.85,
+                                    patrimonyEnd: p.patrimonyEnd * 0.75,
                                 })),
+                                isDashed: true,
+                            },
+                            {
+                                simulationId: 3,
+                                simulationName: 'Comparação',
+                                projections: mockProjections.map((p) => ({
+                                    ...p,
+                                    patrimonyEnd: p.patrimonyEnd * 0.6,
+                                })),
+                                isDashed: true,
                             },
                         ]}
                     />
 
-                    {/* Simulation Pills */}
-                    <div className="mt-6 pt-6 border-t border-border">
+                    {/* Simulation Pills - CENTERED */}
+                    <div className="mt-6 pt-6 border-t border-[#333333]">
                         <SimulationSelector
                             simulations={mockSimulations}
                             selectedIds={selectedSimulationIds}
@@ -174,7 +187,7 @@ export default function ProjectionPage() {
                 </div>
 
                 {/* Timeline Section */}
-                <div className="bg-card border border-border rounded-2xl p-6 mb-6">
+                <div className="bg-[#1a1a1a] border border-[#333333] rounded-2xl p-6 mb-6">
                     <Timeline
                         incomeEvents={mockIncomeTimeline}
                         expenseEvents={mockExpenseTimeline}
@@ -190,13 +203,13 @@ export default function ProjectionPage() {
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-lg font-semibold text-foreground">Movimentações</h2>
                         <div className="flex items-center gap-3">
-                            <div className="flex bg-muted/30 rounded-full p-1">
+                            <div className="flex bg-[#1a1a1a] border border-[#333333] rounded-full p-1">
                                 <button
                                     onClick={() => setMovementFilter('financial')}
                                     className={cn(
                                         'px-4 py-1.5 rounded-full text-sm transition-colors',
                                         movementFilter === 'financial'
-                                            ? 'bg-card text-foreground'
+                                            ? 'bg-[#262626] text-foreground'
                                             : 'text-muted-foreground'
                                     )}
                                 >
@@ -207,14 +220,14 @@ export default function ProjectionPage() {
                                     className={cn(
                                         'px-4 py-1.5 rounded-full text-sm transition-colors',
                                         movementFilter === 'immobilized'
-                                            ? 'bg-card text-foreground'
+                                            ? 'bg-[#262626] text-foreground'
                                             : 'text-muted-foreground'
                                     )}
                                 >
                                     Imobilizadas
                                 </button>
                             </div>
-                            <button className="text-sm text-muted-foreground hover:text-foreground border border-border rounded-lg px-3 py-1.5 transition-colors">
+                            <button className="text-sm text-muted-foreground hover:text-foreground border border-[#333333] rounded-lg px-3 py-1.5 transition-colors">
                                 + Adicionar
                             </button>
                         </div>
@@ -233,7 +246,7 @@ export default function ProjectionPage() {
                 <div>
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-lg font-semibold text-foreground">Seguros</h2>
-                        <button className="text-sm text-muted-foreground hover:text-foreground border border-border rounded-lg px-3 py-1.5 transition-colors">
+                        <button className="text-sm text-muted-foreground hover:text-foreground border border-[#333333] rounded-lg px-3 py-1.5 transition-colors">
                             + Adicionar
                         </button>
                     </div>

@@ -23,9 +23,10 @@ export function ClientSelector({
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    'flex items-center gap-3 px-5 py-3 rounded-full border border-border',
-                    'bg-card hover:border-primary/50 transition-colors',
-                    'text-lg font-medium'
+                    'flex items-center justify-between gap-4 px-6 py-3 min-w-[280px]',
+                    'rounded-full border border-[#333333]',
+                    'bg-[#1a1a1a] hover:border-[#444444] transition-colors',
+                    'text-lg font-normal text-foreground'
                 )}
             >
                 <span>{selectedClient?.name || 'Selecione um cliente'}</span>
@@ -43,22 +44,30 @@ export function ClientSelector({
                         className="fixed inset-0 z-10"
                         onClick={() => setIsOpen(false)}
                     />
-                    <div className="absolute top-full left-0 mt-2 w-64 bg-card border border-border rounded-xl shadow-lg z-20 overflow-hidden">
-                        {clients.map((client) => (
-                            <button
-                                key={client.id}
-                                onClick={() => {
-                                    onSelect(client);
-                                    setIsOpen(false);
-                                }}
-                                className={cn(
-                                    'w-full px-4 py-3 text-left hover:bg-muted/50 transition-colors',
-                                    selectedClient?.id === client.id && 'bg-muted/30'
-                                )}
-                            >
-                                <span className="font-medium">{client.name}</span>
-                            </button>
-                        ))}
+                    <div className="absolute top-full left-0 mt-2 w-full bg-[#1a1a1a] border border-[#333333] rounded-2xl shadow-lg z-20 overflow-hidden">
+                        {/* Header with placeholder */}
+                        <div className="px-4 py-3 border-b border-[#333333]">
+                            <span className="text-muted-foreground text-sm">Digite um nome</span>
+                        </div>
+                        {/* Client list */}
+                        <div className="max-h-[200px] overflow-y-auto">
+                            {clients.map((client) => (
+                                <button
+                                    key={client.id}
+                                    onClick={() => {
+                                        onSelect(client);
+                                        setIsOpen(false);
+                                    }}
+                                    className={cn(
+                                        'w-full px-4 py-3 text-left hover:bg-[#262626] transition-colors',
+                                        'text-foreground text-base',
+                                        selectedClient?.id === client.id && 'bg-[#262626]'
+                                    )}
+                                >
+                                    {client.name}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </>
             )}

@@ -32,11 +32,14 @@ export function PatrimonyCard({
     const getGradientStyle = () => {
         switch (variant) {
             case 'highlight':
-                return 'bg-gradient-to-b from-emerald-600 to-emerald-800';
+                // Green gradient: #03B6AD
+                return { background: 'linear-gradient(to bottom, #03B6AD, #028a84)' };
             case 'blue':
-                return 'bg-gradient-to-b from-blue-600 to-blue-800';
+                // Blue gradient: #6777FA
+                return { background: 'linear-gradient(to bottom, #6777FA, #4a5bc8)' };
             default:
-                return 'bg-gradient-to-b from-zinc-700 to-zinc-800';
+                // Gray striped
+                return { background: 'linear-gradient(to bottom, #404040, #2a2a2a)' };
         }
     };
 
@@ -44,14 +47,12 @@ export function PatrimonyCard({
         <div className="flex flex-col items-center min-w-[120px]">
             {/* Value and percent */}
             <div className="text-center mb-2">
-                <div className="text-sm font-medium text-foreground">
+                <div className="text-sm font-medium text-foreground whitespace-nowrap">
                     {formatCurrency(value)}
                     {percentChange !== undefined && (
                         <span
-                            className={cn(
-                                'ml-1 text-xs',
-                                isPositive ? 'text-green-400' : 'text-red-400'
-                            )}
+                            className="ml-1 text-xs"
+                            style={{ color: '#68AAF1' }}
                         >
                             {isPositive ? '+' : ''}
                             {percentChange.toFixed(2)}%
@@ -61,12 +62,18 @@ export function PatrimonyCard({
             </div>
 
             {/* Gradient bar */}
-            <div className={cn('w-full h-16 rounded-lg overflow-hidden relative', getGradientStyle())}>
+            <div
+                className="w-full h-16 rounded-lg overflow-hidden relative"
+                style={getGradientStyle()}
+            >
                 {/* Striped pattern for non-current years */}
-                {variant !== 'highlight' && (
-                    <div className="absolute inset-0 opacity-20" style={{
-                        backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px)',
-                    }} />
+                {variant === 'default' && (
+                    <div
+                        className="absolute inset-0"
+                        style={{
+                            backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,255,0.08) 3px, rgba(255,255,255,0.08) 6px)',
+                        }}
+                    />
                 )}
             </div>
 
