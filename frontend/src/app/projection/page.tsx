@@ -33,30 +33,47 @@ import {
 } from '@/hooks';
 
 // Helper to create patrimony summaries from projection data
+// Uses actual years from projection data rather than fixed offsets
 const createPatrimonySummaries = (
     projections: { year: number; age: number; patrimonyEnd: number }[],
-    targetYears: number[]
+    clientBirthYear: number
 ) => {
     if (!projections || projections.length === 0) return [];
 
-    const firstYear = projections[0];
-    const labels = ['Curto Prazo', 'Médio Prazo', 'Aposentadoria'];
+    const currentYear = new Date().getFullYear();
+    const firstProjection = projections[0];
 
-    return targetYears.map((targetYear, index) => {
-        const yearData = projections.find(p => p.year === targetYear);
+    // Define target milestones: Hoje, Médio Prazo (10 anos), Aposentadoria (65 anos)
+    const clientAge = currentYear - clientBirthYear;
+    const retirementAge = 65;
+    const retirementYear = currentYear + (retirementAge - clientAge);
+
+    const milestones = [
+        { year: currentYear, label: 'Hoje', isFirst: true, isHighlight: false },
+        { year: currentYear + 10, label: 'Médio Prazo', isFirst: false, isHighlight: false },
+        { year: Math.min(retirementYear, currentYear + 20), label: 'Aposentadoria', isFirst: false, isHighlight: true },
+    ];
+
+    return milestones.map(milestone => {
+        // Find the closest year in projections
+        const yearData = projections.find(p => p.year === milestone.year) ||
+            projections.find(p => p.year >= milestone.year) ||
+            projections[projections.length - 1];
+
         if (!yearData) return null;
 
-        const percentChange = firstYear.patrimonyEnd > 0
-            ? ((yearData.patrimonyEnd - firstYear.patrimonyEnd) / firstYear.patrimonyEnd) * 100
+        const percentChange = firstProjection.patrimonyEnd > 0
+            ? ((yearData.patrimonyEnd - firstProjection.patrimonyEnd) / firstProjection.patrimonyEnd) * 100
             : 0;
 
         return {
             year: yearData.year,
-            label: labels[index] || `Ano ${yearData.year}`,
+            label: milestone.label,
             age: yearData.age,
             value: yearData.patrimonyEnd,
-            percentChange,
-            isHighlight: index === targetYears.length - 1,
+            percentChange: milestone.isFirst ? undefined : percentChange,
+            isHighlight: milestone.isHighlight,
+            isFirst: milestone.isFirst,
         };
     }).filter(Boolean);
 };
@@ -378,10 +395,9 @@ export default function ProjectionPage() {
 
     // Create patrimony summaries from first projection
     const firstProjection = projectionsData?.[0]?.projections || [];
-    const currentYear = new Date().getFullYear();
     const patrimonySummaries = createPatrimonySummaries(
         firstProjection,
-        [currentYear + 1, currentYear + 5, currentYear + 20]
+        clientBirthYear
     );
 
     // Map movements to timeline events
@@ -451,6 +467,7 @@ export default function ProjectionPage() {
                                 value={summary.value}
                                 percentChange={summary.percentChange}
                                 isHighlight={summary.isHighlight}
+                                isFirst={summary.isFirst}
                             />
                         )) : (
                             <div className="text-muted-foreground text-sm">Crie uma simulação para ver projeções</div>
@@ -537,8 +554,8 @@ export default function ProjectionPage() {
                 <div className="bg-[#1a1a1a] border border-[#333333] rounded-2xl p-6 mb-6">
                     <Timeline
                         events={timelineEvents}
-                        startYear={currentYear}
-                        endYear={currentYear + 35}
+                        startYear={new Date().getFullYear()}
+                        endYear={new Date().getFullYear() + 35}
                         clientBirthYear={clientBirthYear}
                         onAddClick={() => setIsMovementModalOpen(true)}
                     />
