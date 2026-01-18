@@ -5,7 +5,7 @@ import { MainLayout } from '@/components/layout';
 import { MovementModal, MovementFormData } from '@/components/dashboard/movement-modal';
 import { InsuranceModal, InsuranceFormData } from '@/components/dashboard/insurance-modal';
 import { SimulationModal, SimulationFormData } from '@/components/dashboard/simulation-modal';
-import { ClientSelector, PatrimonyCard, MovementCard, InsuranceCard, SimulationSelector, AddSimulationModal } from '@/components/dashboard';
+import { ClientSelector, MovementCard, InsuranceCard, SimulationSelector, AddSimulationModal, ProjectionStat } from '@/components/dashboard';
 import { ProjectionChart, ProjectionTable, DetailedProjectionChart } from '@/components/charts';
 import { Timeline, TimelineEvent } from '@/components/timeline';
 import { cn } from '@/lib/utils';
@@ -43,15 +43,19 @@ const createPatrimonySummaries = (
     const currentYear = new Date().getFullYear();
     const firstProjection = projections[0];
 
+    // Calculate max patrimony for progress bars (100% = max value in projection)
+    // We consider the max value achieved across the entire projection period
+    const maxPatrimony = Math.max(...projections.map(p => p.patrimonyEnd));
+
     // Define target milestones: Hoje, Médio Prazo (10 anos), Aposentadoria (65 anos)
     const clientAge = currentYear - clientBirthYear;
     const retirementAge = 65;
     const retirementYear = currentYear + (retirementAge - clientAge);
 
     const milestones = [
-        { year: currentYear, label: 'Hoje', isFirst: true, isHighlight: false },
-        { year: currentYear + 10, label: 'Médio Prazo', isFirst: false, isHighlight: false },
-        { year: Math.min(retirementYear, currentYear + 20), label: 'Aposentadoria', isFirst: false, isHighlight: true },
+        { year: currentYear, label: 'Hoje', isFirst: true, isHighlight: false, variant: 'solid' as const },
+        { year: currentYear + 10, label: 'Médio Prazo', isFirst: false, isHighlight: false, variant: 'separated' as const },
+        { year: Math.min(retirementYear, currentYear + 20), label: 'Aposentadoria', isFirst: false, isHighlight: true, variant: 'separated' as const },
     ];
 
     return milestones.map(milestone => {
@@ -66,6 +70,11 @@ const createPatrimonySummaries = (
             ? ((yearData.patrimonyEnd - firstProjection.patrimonyEnd) / firstProjection.patrimonyEnd) * 100
             : 0;
 
+        // Calculate progress relative to max patrimony
+        const progress = maxPatrimony > 0
+            ? Math.min((yearData.patrimonyEnd / maxPatrimony) * 100, 100)
+            : 0;
+
         return {
             year: yearData.year,
             label: milestone.label,
@@ -74,6 +83,8 @@ const createPatrimonySummaries = (
             percentChange: milestone.isFirst ? undefined : percentChange,
             isHighlight: milestone.isHighlight,
             isFirst: milestone.isFirst,
+            variant: milestone.variant,
+            progress,
         };
     }).filter(Boolean);
 };
@@ -467,15 +478,16 @@ export default function ProjectionPage() {
                     {/* Right: Patrimony Cards */}
                     <div className="flex gap-4 overflow-x-auto pb-2">
                         {patrimonySummaries.length > 0 ? patrimonySummaries.map((summary: any) => (
-                            <PatrimonyCard
+                            <ProjectionStat
                                 key={summary.year}
                                 year={summary.year}
                                 label={summary.label}
                                 age={summary.age}
                                 value={summary.value}
-                                percentChange={summary.percentChange}
-                                isHighlight={summary.isHighlight}
-                                isFirst={summary.isFirst}
+                                percentage={summary.percentChange}
+                                progress={summary.progress}
+                                variant={summary.variant}
+                                isToday={summary.isFirst}
                             />
                         )) : (
                             <div className="text-muted-foreground text-sm">Crie uma simulação para ver projeções</div>
