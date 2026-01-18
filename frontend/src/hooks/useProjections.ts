@@ -14,7 +14,7 @@ export const useProjections = (
 
             // Fetch projections for all selected simulations in parallel
             const promises = simulationIds.map(id =>
-                projectionsService.calculate({
+                projectionsService.generate({
                     simulationId: id,
                     endYear,
                     lifeStatus
