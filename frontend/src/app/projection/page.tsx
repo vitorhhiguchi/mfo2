@@ -5,7 +5,7 @@ import { MainLayout } from '@/components/layout';
 import { MovementModal, MovementFormData } from '@/components/dashboard/movement-modal';
 import { InsuranceModal, InsuranceFormData } from '@/components/dashboard/insurance-modal';
 import { SimulationModal, SimulationFormData } from '@/components/dashboard/simulation-modal';
-import { ClientSelector, PatrimonyCard, MovementCard, InsuranceCard, SimulationSelector } from '@/components/dashboard';
+import { ClientSelector, PatrimonyCard, MovementCard, InsuranceCard, SimulationSelector, AddSimulationModal } from '@/components/dashboard';
 import { ProjectionChart } from '@/components/charts';
 import { Timeline } from '@/components/timeline';
 import { cn } from '@/lib/utils';
@@ -20,6 +20,7 @@ import {
     useUpdateSimulation,
     useDeleteSimulation,
     useCreateSimulationVersion,
+    useDuplicateSimulation,
     useMovements,
     useCreateMovement,
     useUpdateMovement,
@@ -83,6 +84,7 @@ export default function ProjectionPage() {
     const [isMovementModalOpen, setIsMovementModalOpen] = useState(false);
     const [isInsuranceModalOpen, setIsInsuranceModalOpen] = useState(false);
     const [isSimulationModalOpen, setIsSimulationModalOpen] = useState(false);
+    const [isAddSimulationModalOpen, setIsAddSimulationModalOpen] = useState(false);
 
     // Editing State
     const [editingSimulation, setEditingSimulation] = useState<Simulation | null>(null);
@@ -93,6 +95,7 @@ export default function ProjectionPage() {
     const updateSimulation = useUpdateSimulation();
     const deleteSimulation = useDeleteSimulation();
     const createVersion = useCreateSimulationVersion();
+    const duplicateSimulation = useDuplicateSimulation();
 
     const createMovement = useCreateMovement();
     // const updateMovement = useUpdateMovement(); // TODO
@@ -197,6 +200,20 @@ export default function ProjectionPage() {
             toast.success("Nova versão criada com sucesso!");
         } catch (error) {
             toast.error("Erro ao duplicar simulação.");
+        }
+    };
+
+    const handleAddNewSimulation = async (name: string) => {
+        if (!activeSimulationId) {
+            toast.error("Selecione uma simulação base primeiro.");
+            return;
+        }
+        try {
+            const newSim = await duplicateSimulation.mutateAsync({ id: activeSimulationId, name });
+            toast.success(`Simulação "${name}" criada com sucesso!`);
+            setSelectedSimulationIds(prev => [...prev, newSim.id]);
+        } catch (error: any) {
+            toast.error(error?.response?.data?.error || "Erro ao criar simulação.");
         }
     };
 
@@ -379,10 +396,7 @@ export default function ProjectionPage() {
                                 simulations={simulations}
                                 selectedIds={selectedSimulationIds}
                                 onToggle={toggleSimulation}
-                                onAddClick={() => {
-                                    setEditingSimulation(null);
-                                    setIsSimulationModalOpen(true);
-                                }}
+                                onAddClick={() => setIsAddSimulationModalOpen(true)}
                                 onEditSimulation={handleEditSimulation}
                                 onDuplicateSimulation={handleDuplicateSimulation}
                                 onDeleteSimulation={handleDeleteSimulation}
@@ -501,6 +515,13 @@ export default function ProjectionPage() {
                         startDate: editingSimulation.startDate ? new Date(editingSimulation.startDate) : new Date(),
                         inflationRate: editingSimulation.realRate ?? 4,
                     } : undefined}
+                />
+
+                <AddSimulationModal
+                    open={isAddSimulationModalOpen}
+                    onOpenChange={setIsAddSimulationModalOpen}
+                    onSubmit={handleAddNewSimulation}
+                    sourceSimulationName={simulations?.find(s => s.id === activeSimulationId)?.name}
                 />
             </div>
         </MainLayout>

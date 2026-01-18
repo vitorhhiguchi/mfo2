@@ -63,3 +63,16 @@ export const useCreateSimulationVersion = () => {
         },
     });
 };
+
+export const useDuplicateSimulation = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ id, name }: { id: number; name: string }) =>
+            simulationsService.duplicate(id, name),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['simulations'] });
+        },
+    });
+};
+
