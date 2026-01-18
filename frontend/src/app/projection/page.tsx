@@ -204,10 +204,29 @@ export default function ProjectionPage() {
     };
 
     const handleAddNewSimulation = async (name: string) => {
-        if (!activeSimulationId) {
-            toast.error("Selecione uma simulação base primeiro.");
+        if (!selectedClient) {
+            toast.error("Selecione um cliente primeiro.");
             return;
         }
+
+        // If no simulations exist, create from scratch
+        if (!activeSimulationId) {
+            try {
+                const newSim = await createSimulation.mutateAsync({
+                    name,
+                    startDate: new Date().toISOString(),
+                    realRate: 0.04,
+                    clientId: selectedClient.id
+                });
+                toast.success(`Simulação "${name}" criada com sucesso!`);
+                setSelectedSimulationIds([newSim.id]);
+            } catch (error: any) {
+                toast.error(error?.response?.data?.error || "Erro ao criar simulação.");
+            }
+            return;
+        }
+
+        // Otherwise duplicate from active simulation
         try {
             const newSim = await duplicateSimulation.mutateAsync({ id: activeSimulationId, name });
             toast.success(`Simulação "${name}" criada com sucesso!`);
