@@ -37,7 +37,7 @@ const navItems: NavItem[] = [
         label: 'Clientes',
         icon: <Users className="h-5 w-5" />,
         children: [
-            { label: 'Dashboard', icon: <LayoutDashboard className="h-4 w-4" />, href: '/dashboard' },
+            { label: 'Alocações', icon: <LayoutDashboard className="h-4 w-4" />, href: '/assets' },
             { label: 'Projeção', icon: <TrendingUp className="h-4 w-4" />, href: '/projection' },
             { label: 'Histórico', icon: <History className="h-4 w-4" />, href: '/history' },
         ],

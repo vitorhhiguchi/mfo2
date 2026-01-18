@@ -80,9 +80,11 @@ export function ProjectionChart({ projections }: ProjectionChartProps) {
         };
 
         projections.forEach((sim) => {
-            const projection = sim.projections[index];
+            // Find projection by year to ensure alignment
+            const projection = sim.projections.find(proj => proj.year === p.year);
             if (projection) {
-                dataPoint[sim.simulationName] = projection.patrimonyEnd;
+                // Use ID-based key to avoid issues with special characters in names
+                dataPoint[`sim_${sim.simulationId}`] = projection.patrimonyEnd;
             }
         });
 
@@ -136,7 +138,8 @@ export function ProjectionChart({ projections }: ProjectionChartProps) {
                         <Line
                             key={sim.simulationId}
                             type="monotone"
-                            dataKey={sim.simulationName}
+                            dataKey={`sim_${sim.simulationId}`}
+                            name={sim.simulationName}
                             stroke={getColor(sim)}
                             strokeWidth={3}
                             strokeDasharray={

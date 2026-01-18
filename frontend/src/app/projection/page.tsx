@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MainLayout } from '@/components/layout';
+import { MainLayout, ClientNavigation } from '@/components/layout';
 import { MovementModal, MovementFormData } from '@/components/dashboard/movement-modal';
 import { InsuranceModal, InsuranceFormData } from '@/components/dashboard/insurance-modal';
 import { SimulationModal, SimulationFormData } from '@/components/dashboard/simulation-modal';
-import { ClientSelector, MovementCard, InsuranceCard, SimulationSelector, AddSimulationModal, ProjectionStat } from '@/components/dashboard';
+import { AssetModal } from '@/components/assets';
+import { ClientSelector, MovementCard, InsuranceCard, SimulationSelector, ProjectionStat } from '@/components/dashboard';
+import { AssetCard } from '@/components/assets';
+import { Asset, CreateAssetInput } from '@/types';
 import { ProjectionChart, ProjectionTable, DetailedProjectionChart } from '@/components/charts';
 import { Timeline, TimelineEvent } from '@/components/timeline';
 import { cn } from '@/lib/utils';
@@ -29,7 +32,8 @@ import {
     useCreateInsurance,
     useUpdateInsurance,
     useDeleteInsurance,
-    useProjections
+    useProjections,
+    useAssets
 } from '@/hooks';
 
 // Helper to create patrimony summaries from projection data
@@ -129,18 +133,20 @@ export default function ProjectionPage() {
     // Fetch dependent data
     const { data: movements } = useMovements(activeSimulationId);
     const { data: insurances } = useInsurances(activeSimulationId);
+    const { assets, createAsset, updateAsset, deleteAsset } = useAssets(activeSimulationId);
     const { data: projectionsData, isLoading: isLoadingProjections } = useProjections(selectedSimulationIds, 2060, lifeStatus);
 
     // Modals & Mutation Hooks
     const [isMovementModalOpen, setIsMovementModalOpen] = useState(false);
     const [isInsuranceModalOpen, setIsInsuranceModalOpen] = useState(false);
+    const [isAssetModalOpen, setIsAssetModalOpen] = useState(false);
     const [isSimulationModalOpen, setIsSimulationModalOpen] = useState(false);
-    const [isAddSimulationModalOpen, setIsAddSimulationModalOpen] = useState(false);
 
     // Editing State
     const [editingSimulation, setEditingSimulation] = useState<Simulation | null>(null);
     const [editingMovement, setEditingMovement] = useState<Movement | null>(null);
     const [editingInsurance, setEditingInsurance] = useState<Insurance | null>(null);
+    const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
 
     // Mutation Hooks
     const createSimulation = useCreateSimulation();
@@ -260,6 +266,34 @@ export default function ProjectionPage() {
         }
     };
 
+    const handleSaveAsset = async (data: any) => {
+        if (!activeSimulationId) return;
+        try {
+            if (editingAsset) {
+                await updateAsset.mutateAsync({ id: editingAsset.id, data });
+                toast.success("Ativo atualizado!");
+            } else {
+                await createAsset.mutateAsync({ ...data, simulationId: activeSimulationId });
+                toast.success("Ativo criado!");
+            }
+            setIsAssetModalOpen(false);
+            setEditingAsset(null);
+        } catch (error) {
+            toast.error("Erro ao salvar ativo");
+        }
+    };
+
+    const handleEditAsset = (asset: Asset) => {
+        setEditingAsset(asset);
+        setIsAssetModalOpen(true);
+    };
+
+    const handleDeleteAsset = async (asset: Asset) => {
+        if (confirm(`Excluir ${asset.name}?`)) {
+            await deleteAsset.mutateAsync(asset.id);
+        }
+    };
+
     const handleEditInsurance = (insurance: Insurance) => {
         setEditingInsurance(insurance);
         setIsInsuranceModalOpen(true);
@@ -325,38 +359,7 @@ export default function ProjectionPage() {
         }
     };
 
-    const handleAddNewSimulation = async (name: string) => {
-        if (!selectedClient) {
-            toast.error("Selecione um cliente primeiro.");
-            return;
-        }
 
-        // If no simulations exist, create from scratch
-        if (!activeSimulationId) {
-            try {
-                const newSim = await createSimulation.mutateAsync({
-                    name,
-                    startDate: new Date().toISOString().split('T')[0],
-                    realRate: 0.04,
-                    clientId: selectedClient.id
-                });
-                toast.success(`Simulação "${name}" criada com sucesso!`);
-                setSelectedSimulationIds([newSim.id]);
-            } catch (error: any) {
-                toast.error(error?.response?.data?.error || "Erro ao criar simulação.");
-            }
-            return;
-        }
-
-        // Otherwise duplicate from active simulation
-        try {
-            const newSim = await duplicateSimulation.mutateAsync({ id: activeSimulationId, name });
-            toast.success(`Simulação "${name}" criada com sucesso!`);
-            setSelectedSimulationIds(prev => [...prev, newSim.id]);
-        } catch (error: any) {
-            toast.error(error?.response?.data?.error || "Erro ao criar simulação.");
-        }
-    };
 
     const handleDeleteSimulation = async (sim: Simulation) => {
         if (confirm(`Tem certeza que deseja excluir a simulação "${sim.name}"?`)) {
@@ -379,14 +382,22 @@ export default function ProjectionPage() {
     };
 
     // Filter movements by type (using backend data)
+    // Filter movements and assets
     const activeMovements = movements || [];
+    const activeAssets = assets || [];
+
     const financialMovements = activeMovements.filter(
-        // Logic: Not immobilized (TODO: Add explicit 'immobilized' check if added to schema, for now name-based hack or type)
         (m) => m.type === 'INCOME' || (m.type === 'EXPENSE' && m.name !== 'Compra de Imóvel')
     );
+    const financialAssetsList = activeAssets.filter(a => a.type === 'FINANCIAL');
+
     const immobilizedMovements = activeMovements.filter(
-        (m) => m.name === 'Compra de Imóvel' // TODO: Better filtering strategy
+        (m) => m.name === 'Compra de Imóvel'
     );
+    const realEstateAssets = activeAssets.filter(a => a.type === 'REAL_ESTATE');
+
+    const financialItems = [...financialMovements, ...financialAssetsList];
+    const immobilizedItems = [...immobilizedMovements, ...realEstateAssets];
 
     // Client birth year for timeline
     const clientBirthYear = selectedClient ? new Date(selectedClient.birthDate).getFullYear() : 1985;
@@ -440,23 +451,9 @@ export default function ProjectionPage() {
     return (
         <MainLayout>
             <div className="min-h-screen bg-background p-6 lg:p-8">
-                {/* Header Tabs */}
-                <div className="flex items-center justify-center gap-8 mb-8">
-                    <button className="text-muted-foreground hover:text-foreground transition-colors">
-                        Alocações
-                    </button>
-                    <button className="text-foreground font-medium border-b-2 border-primary pb-1">
-                        Projeção
-                    </button>
-                    <button className="text-muted-foreground hover:text-foreground transition-colors">
-                        Histórico
-                    </button>
-                </div>
-
-                {/* Client & Patrimony Section */}
-                <div className="flex flex-col lg:flex-row items-start gap-8 mb-8">
-                    {/* Left: Client Selector & Total */}
-                    <div className="flex-1">
+                {/* Header: Selectors & Navigation */}
+                <div className="flex flex-col gap-6 mb-8">
+                    <div className="flex items-center gap-4">
                         {clients && (
                             <ClientSelector
                                 clients={clients}
@@ -464,13 +461,23 @@ export default function ProjectionPage() {
                                 onSelect={setSelectedClient}
                             />
                         )}
-                        <div className="mt-4">
+                        {/* Add Simulation Selector here if needed, consistent with Assets Page */}
+                    </div>
+                    <ClientNavigation />
+                </div>
+
+                {/* Client & Patrimony Section */}
+                <div className="flex flex-col lg:flex-row items-start gap-8 mb-8">
+                    {/* Left: Total */}
+                    <div className="flex-1">
+                        <div className="mt-0">
                             <p className="text-xs text-muted-foreground">Patrimônio Líquido Total</p>
                             <div className="flex items-baseline gap-2">
                                 <span className="text-3xl font-bold text-foreground">
-                                    {formatCurrency(2679930)}
+                                    {formatCurrency(patrimonySummaries.find((s: any) => s?.isFirst)?.value || 0)}
                                 </span>
-                                <span className="text-sm" style={{ color: '#68AAF1' }}>+52,37%</span>
+                                {/* TODO: Calculate actual growth percentage */}
+                                <span className="text-sm" style={{ color: '#68AAF1' }}>+0%</span>
                             </div>
                         </div>
                     </div>
@@ -582,7 +589,10 @@ export default function ProjectionPage() {
                                 simulations={simulations}
                                 selectedIds={selectedSimulationIds}
                                 onToggle={toggleSimulation}
-                                onAddClick={() => setIsAddSimulationModalOpen(true)}
+                                onAddClick={() => {
+                                    setEditingSimulation(null);
+                                    setIsSimulationModalOpen(true);
+                                }}
                                 onEditSimulation={handleEditSimulation}
                                 onDuplicateSimulation={handleDuplicateSimulation}
                                 onDeleteSimulation={handleDeleteSimulation}
@@ -644,20 +654,33 @@ export default function ProjectionPage() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {(movementFilter === 'financial' ? financialMovements : immobilizedMovements)
-                            .slice(0, 4)
-                            .map((movement) => (
-                                <MovementCard
-                                    key={movement.id}
-                                    movement={movement}
-                                    onEdit={handleEditMovement}
-                                    onDelete={handleDeleteMovement}
-                                />
-                            ))}
-                        {(!activeMovements || activeMovements.length === 0) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {(movementFilter === 'financial' ? financialItems : immobilizedItems)
+                            .map((item: any) => {
+                                const isAsset = 'records' in item;
+                                if (isAsset) {
+                                    return (
+                                        <AssetCard
+                                            key={`asset-${item.id}`}
+                                            asset={item}
+                                            date={new Date()}
+                                            onEdit={handleEditAsset}
+                                            onDelete={handleDeleteAsset}
+                                        />
+                                    );
+                                }
+                                return (
+                                    <MovementCard
+                                        key={`mov-${item.id}`}
+                                        movement={item}
+                                        onEdit={handleEditMovement}
+                                        onDelete={handleDeleteMovement}
+                                    />
+                                );
+                            })}
+                        {((movementFilter === 'financial' ? financialItems : immobilizedItems).length === 0) && (
                             <div className="col-span-full text-center text-muted-foreground py-8">
-                                Nenhuma movimentação cadastrada nesta simulação.
+                                Nenhum item encontrado nesta categoria.
                             </div>
                         )}
                     </div>
@@ -723,6 +746,14 @@ export default function ProjectionPage() {
                     } : null}
                 />
 
+                <AssetModal
+                    open={isAssetModalOpen}
+                    onOpenChange={setIsAssetModalOpen}
+                    onSubmit={handleSaveAsset}
+                    simulationId={activeSimulationId || 0}
+                    initialData={editingAsset}
+                />
+
                 <SimulationModal
                     open={isSimulationModalOpen}
                     onOpenChange={setIsSimulationModalOpen}
@@ -734,13 +765,8 @@ export default function ProjectionPage() {
                     } : undefined}
                 />
 
-                <AddSimulationModal
-                    open={isAddSimulationModalOpen}
-                    onOpenChange={setIsAddSimulationModalOpen}
-                    onSubmit={handleAddNewSimulation}
-                    sourceSimulationName={simulations?.find(s => s.id === activeSimulationId)?.name}
-                />
+
             </div>
-        </MainLayout>
+        </MainLayout >
     );
 }
