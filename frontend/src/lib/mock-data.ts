@@ -174,7 +174,7 @@ export const mockMovements: Movement[] = [
         type: 'INCOME',
         category: 'OTHER',
         value: 220000,
-        frequency: 'ONE_TIME',
+        frequency: 'ONCE',
         startDate: '2023-07-09',
         endDate: '2023-07-22',
         simulationId: 1,
@@ -200,7 +200,7 @@ export const mockMovements: Movement[] = [
         type: 'INCOME',
         category: 'WORK',
         value: 500000,
-        frequency: 'ANNUALLY',
+        frequency: 'YEARLY',
         startDate: '2023-07-09',
         endDate: '2023-07-22',
         simulationId: 1,
@@ -213,7 +213,7 @@ export const mockMovements: Movement[] = [
         type: 'EXPENSE',
         category: undefined,
         value: 1500000,
-        frequency: 'ONE_TIME',
+        frequency: 'ONCE',
         startDate: '2023-07-09',
         endDate: '2023-07-22',
         simulationId: 1,
@@ -249,7 +249,7 @@ export const mockInsurances: Insurance[] = [
     },
 ];
 
-export const mockProjections: YearProjection[] = [
+export const mockProjections: any[] = [
     { year: 2025, age: 45, status: 'ALIVE', patrimonyStart: 1000000, totalIncome: 180000, totalExpenses: 96000, netResult: 84000, growth: 43360, patrimonyEnd: 1127360, financingPayments: 0, insurancePremiums: 5040, insuranceValue: 600000 },
     { year: 2026, age: 46, status: 'ALIVE', patrimonyStart: 1127360, totalIncome: 180000, totalExpenses: 96000, netResult: 84000, growth: 48454, patrimonyEnd: 1259814, financingPayments: 0, insurancePremiums: 5040, insuranceValue: 600000 },
     { year: 2027, age: 47, status: 'ALIVE', patrimonyStart: 1259814, totalIncome: 180000, totalExpenses: 96000, netResult: 84000, growth: 53753, patrimonyEnd: 1397567, financingPayments: 0, insurancePremiums: 5040, insuranceValue: 600000 },

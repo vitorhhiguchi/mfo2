@@ -108,7 +108,7 @@ export function AssetHistoryModal({ asset, open, onOpenChange }: AssetHistoryMod
                                 />
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#1f1f1f', borderColor: '#333' }}
-                                    formatter={(val: number) => formatCurrency(val)}
+                                    formatter={(val: any) => formatCurrency(val)}
                                     labelStyle={{ color: '#888' }}
                                 />
                                 <Line

@@ -35,7 +35,7 @@ import { cn } from '@/lib/utils';
 // Validação de Schema
 const simulationSchema = z.object({
     name: z.string().min(2, { message: 'Nome deve ter pelo menos 2 caracteres' }),
-    startDate: z.date({ required_error: 'Data de início é obrigatória' }),
+    startDate: z.date(),
     inflationRate: z.coerce.number().min(0).max(100),
 });
 
@@ -59,7 +59,7 @@ export function SimulationModal({
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm<SimulationFormData>({
-        resolver: zodResolver(simulationSchema),
+        resolver: zodResolver(simulationSchema) as any,
         defaultValues: {
             name: '',
             inflationRate: 4,
