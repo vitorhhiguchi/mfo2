@@ -1,45 +1,88 @@
-# MFO Backend
+# MFO Backend API
 
-API RESTful desenvolvida com Fastify e Prisma para o sistema Multi Family Office.
+Este é o serviço de backend para a ferramenta de projeção patrimonial MFO. Ele fornece uma API RESTful construída com Fastify e Prisma para gerenciar clientes, simulações e todos os cálculos financeiros associados.
 
-## Instalação
+## 🛠 Tecnologias
+
+*   **Runtime**: Node.js (v20+)
+*   **Framework**: [Fastify](https://www.fastify.io/) - Escolhido pela sua baixa sobrecarga e alta performance.
+*   **Linguagem**: TypeScript.
+*   **Banco de Dados**: PostgreSQL.
+*   **ORM**: [Prisma](https://www.prisma.io/) - Para modelagem de dados declarativa e migrações seguras.
+*   **Validação**: [Zod](https://zod.dev/) - Para validação de esquemas e inferência de tipos.
+*   **Testes**: Jest e Supertest.
+
+## 📂 Estrutura de Pastas
+
+```
+src/
+├── controllers/  # Manipuladores de requisição HTTP (Entrada)
+├── services/     # Lógica de negócios pura (Core)
+├── routes/       # Definição de rotas da API
+├── lib/          # Configurações (ex: instância do Prisma)
+├── config/       # Variáveis de ambiente e constantes
+└── server.ts     # Ponto de entrada da aplicação
+```
+
+## 🚀 Getting Started
+
+### Instalação
 
 ```bash
 npm install
 ```
 
-## Configuração
+### Banco de Dados
 
-Copie o arquivo `.env.example` para `.env` e configure a URL do banco de dados:
+Certifique-se que o PostgreSQL está rodando (via Docker ou local).
+Configuração padrão no `docker-compose.yml` da raiz:
+- User: `planner`
+- Pass: `plannerpw`
+- DB: `plannerdb`
 
-```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mfo_db?schema=public"
+**Aplicar Migrações:**
+```bash
+npx prisma migrate dev
+```
+Isso criará as tabelas necessárias no banco de dados.
+
+### Execução
+
+**Modo Desenvolvimento (com auto-reload):**
+```bash
+npm run dev
 ```
 
-## Banco de Dados
+**Modo Produção:**
+```bash
+npm run build
+npm start
+```
 
-Utilizamos Prisma ORM.
+## 🧪 Testes
 
-- Rodar migrações: `npx prisma migrate dev`
-- Visualizar banco (Prisma Studio): `npx prisma studio`
-- Seed (dados de teste): `npm run seed`
+O projeto possui uma suíte de testes robusta.
 
-## Scripts
+*   `npm run test`: Executa todos os testes.
+*   `npm run test:unit`: Foca nos testes de unidade dos Services.
+*   `npm run test:integration`: Testa os endpoints da API real usando um banco de dados de teste (ou mockado).
+*   `npm run test:coverage`: Gera relatório de cobertura de código.
 
-- `npm run dev`: Inicia o servidor em modo de desenvolvimento.
-- `npm run build`: Compila o projeto.
-- `npm start`: Inicia o servidor de produção.
+## 🔑 Principais Endpoints
 
-## Estrutura de Pastas
+### Simulações (`/simulations`)
+*   `POST /`: Cria uma nova simulação.
+    *   *Feature*: Suporta criação "Deep Copy" de uma versão anterior se `baseSimulationId` for fornecido.
+*   `GET /?clientId=...`: Lista simulações de um cliente.
+*   `GET /:id`: Detalhes completos de uma simulação.
 
-- `src/controllers`: Controladores das rotas.
-- `src/services`: Lógica de negócios.
-- `src/engine`: Motores de cálculo (Projeção).
-- `src/routes`: Definição de rotas da API.
-- `prisma/schema.prisma`: Schema do banco de dados.
+### Projeção (`/projection`)
+*   `GET /:id`: Retorna os dados calculados para o gráfico de projeção (evolução do patrimônio ano a ano).
 
-## Principais Endpoints
+### Assets, Movements, Insurances
+*   CRUDs padrão para gerenciamento das entidades financeiras vinculadas a uma simulação.
 
-- `GET /simulations`: Lista simulações.
-- `POST /projections`: Gera dados de projeção.
-- `POST /assets`: Cria novas alocações.
+## ⚠️ Notas de Implementação
+
+*   **Tratamento de Erros**: Utiliza um handler global do Fastify para padronizar respostas de erro (ZodError, PrismaError, etc).
+*   **BigInt**: O Prisma mapeia `BigInt` do banco, mas a API serializa para JSON tratando esses valores adequadamente (serialização customizada implementada no server).
