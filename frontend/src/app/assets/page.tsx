@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation';
 import { Plus, Wallet, MoreVertical, History, Settings } from 'lucide-react';
 import { format, parseISO, isSameDay, isBefore } from 'date-fns';
 import { SimulationModal, SimulationFormData } from '@/components/dashboard/simulation-modal';
+import { AssetHistoryModal } from '@/components/assets/asset-history-modal';
+import { QuickUpdateModal } from '@/components/assets/quick-update-modal';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -29,7 +31,11 @@ export default function AssetsPage() {
 
     // Modals
     const [isAssetModalOpen, setIsAssetModalOpen] = useState(false);
+    const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+    const [isQuickUpdateModalOpen, setIsQuickUpdateModalOpen] = useState(false);
+
     const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
+    const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null); // For history
     const [isSimModalOpen, setIsSimModalOpen] = useState(false);
 
     // ---- Data Fetching ----
@@ -96,7 +102,7 @@ export default function AssetsPage() {
     };
 
     const handleQuickUpdate = async () => {
-        alert("Funcionalidade de Atualização Rápida em Breve");
+        setIsQuickUpdateModalOpen(true);
     };
 
     const handleCreateSimulation = async (data: SimulationFormData) => {
@@ -212,6 +218,10 @@ export default function AssetsPage() {
                                                     key={asset.id}
                                                     asset={asset}
                                                     date={parseISO(displayDate)}
+                                                    onClick={() => {
+                                                        setSelectedAsset(asset);
+                                                        setIsHistoryModalOpen(true);
+                                                    }}
                                                     onEdit={(a) => {
                                                         setEditingAsset(a);
                                                         setIsAssetModalOpen(true);
@@ -252,6 +262,10 @@ export default function AssetsPage() {
                                                     key={asset.id}
                                                     asset={asset}
                                                     date={parseISO(displayDate)}
+                                                    onClick={() => {
+                                                        setSelectedAsset(asset);
+                                                        setIsHistoryModalOpen(true);
+                                                    }}
                                                     onEdit={(a) => {
                                                         setEditingAsset(a);
                                                         setIsAssetModalOpen(true);
@@ -293,6 +307,19 @@ export default function AssetsPage() {
                     onOpenChange={setIsSimModalOpen}
                     onSubmit={handleCreateSimulation}
                     initialData={null}
+                />
+
+                <AssetHistoryModal
+                    asset={selectedAsset}
+                    open={isHistoryModalOpen}
+                    onOpenChange={setIsHistoryModalOpen}
+                />
+
+                <QuickUpdateModal
+                    open={isQuickUpdateModalOpen}
+                    onOpenChange={setIsQuickUpdateModalOpen}
+                    assets={assets || []}
+                    simulationId={selectedSimulationId!}
                 />
             </div>
         </MainLayout>

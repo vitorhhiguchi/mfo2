@@ -7,12 +7,13 @@ import { differenceInMonths, parseISO } from 'date-fns';
 
 interface AssetCardProps {
     asset: Asset;
-    date: Date; // Usado para calcular valor atual ou progresso
+    date: Date; // Usado para executar calculo de valor atual ou progresso
     onEdit: (asset: Asset) => void;
     onDelete: (asset: Asset) => void;
+    onClick?: () => void;
 }
 
-export function AssetCard({ asset, date, onEdit, onDelete }: AssetCardProps) {
+export function AssetCard({ asset, date, onEdit, onDelete, onClick }: AssetCardProps) {
     const isRealEstate = asset.type === 'REAL_ESTATE';
 
     // Obter o valor final (último registro)
@@ -83,20 +84,22 @@ export function AssetCard({ asset, date, onEdit, onDelete }: AssetCardProps) {
     const valueColor = isRealEstate ? 'text-[#03B6AD]' : 'text-[#6777FA]';
 
     return (
-        <div className={cn(
-            "p-5 rounded-2xl bg-[#1a1a1a] border relative flex flex-col justify-between group min-h-[160px]",
-            borderColor
-        )}>
+        <div
+            onClick={onClick}
+            className={cn(
+                "p-5 rounded-2xl bg-[#1a1a1a] border relative flex flex-col justify-between group min-h-[160px] cursor-pointer transition-all hover:bg-[#222]",
+                borderColor
+            )}>
             {/* Action buttons - show on hover */}
             <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                 <button
-                    onClick={() => onEdit(asset)}
+                    onClick={(e) => { e.stopPropagation(); onEdit(asset); }}
                     className="p-1.5 rounded-md bg-[#262626] hover:bg-[#333] text-muted-foreground hover:text-white transition-colors"
                 >
                     <Pencil className="h-3.5 w-3.5" />
                 </button>
                 <button
-                    onClick={() => onDelete(asset)}
+                    onClick={(e) => { e.stopPropagation(); onDelete(asset); }}
                     className="p-1.5 rounded-md bg-[#262626] hover:bg-red-900/50 text-muted-foreground hover:text-red-400 transition-colors"
                 >
                     <Trash2 className="h-3.5 w-3.5" />

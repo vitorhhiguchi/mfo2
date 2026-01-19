@@ -157,7 +157,6 @@ export default function ProjectionPage() {
     const [editingInsurance, setEditingInsurance] = useState<Insurance | null>(null);
     const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
     const [duplicatingFromId, setDuplicatingFromId] = useState<number | null>(null);
-    const [duplicatingFromId, setDuplicatingFromId] = useState<number | null>(null);
 
     // Mutation Hooks
     const createSimulation = useCreateSimulation();
@@ -625,7 +624,10 @@ export default function ProjectionPage() {
                     )}
 
                     {viewMode === 'table' && (
-                        <ProjectionTable projections={detailedProjections} />
+                        <ProjectionTable
+                            projections={detailedProjections}
+                            clientBirthYear={clientBirthYear}
+                        />
                     )}
 
                     {/* Simulation Pills - CENTERED */}

@@ -12,6 +12,7 @@ interface SimulationProjection {
 interface ProjectionTableProps {
     projections: SimulationProjection[];
     className?: string;
+    clientBirthYear?: number;
 }
 
 const formatCurrency = (val: number) => {
@@ -25,7 +26,7 @@ const formatCurrency = (val: number) => {
     }).format(val);
 };
 
-export function ProjectionTable({ projections, className }: ProjectionTableProps) {
+export function ProjectionTable({ projections, className, clientBirthYear = 1980 }: ProjectionTableProps) {
     if (!projections || projections.length === 0 || !projections[0]?.projections?.length) {
         return (
             <div className="text-center text-muted-foreground py-8">
@@ -63,14 +64,14 @@ export function ProjectionTable({ projections, className }: ProjectionTableProps
                 </thead>
                 <tbody>
                     {sampleYears.map(year => {
-                        const firstSimYear = projections[0].projections.find(p => p.year === year);
+                        const age = clientBirthYear ? year - clientBirthYear : '--';
                         return (
                             <tr key={year} className="border-b border-[#262626] hover:bg-[#262626]/50 transition-colors">
                                 <td className="py-3 px-4 font-medium text-foreground sticky left-0 bg-[#1a1a1a]">
                                     {year}
                                 </td>
                                 <td className="py-3 px-4 text-muted-foreground">
-                                    {firstSimYear?.age || '--'}
+                                    {age}
                                 </td>
                                 {projections.map(sim => {
                                     const yearData = sim.projections.find(p => p.year === year);
@@ -79,7 +80,7 @@ export function ProjectionTable({ projections, className }: ProjectionTableProps
                                             key={sim.simulationId}
                                             className="py-3 px-4 text-right font-medium text-foreground"
                                         >
-                                            {yearData ? formatCurrency(yearData.patrimonyEnd) : '--'}
+                                            {yearData ? formatCurrency(yearData.totalPatrimony) : '--'}
                                         </td>
                                     );
                                 })}
